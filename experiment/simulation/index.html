@@ -1,13 +1,509 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<!-- Add CSS at the head of HTML file -->
-    <link rel="stylesheet" href="./css/main.css">
-</head>
-<body>
-		<!-- Your code goes here-->
+<html lang="en">
 
-	<!-- Add JS at the bottom of HTML file --> 
-        <script src="./js/main.js"></script>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Implementation and simulation of Perceptron</title>
+	<link rel="stylesheet" href="./css/main.css">
+	<!-- Chart.js for visualizations -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+	<div class="simulation-container">
+		<!-- Step Indicator Sidebar -->
+		<aside class="step-sidebar">
+			<div class="step-sidebar-header">
+				<h3>Experiment Steps</h3>
+			</div>
+			<div class="step-list">
+				<div class="step-item" data-step="1">
+					<div class="step-indicator">
+						<span class="step-number">1</span>
+					</div>
+					<div class="step-content">
+						<span class="step-title">Import Libraries</span>
+					</div>
+				</div>
+				<div class="step-item" data-step="2">
+					<div class="step-indicator">
+						<span class="step-number">2</span>
+					</div>
+					<div class="step-content">
+						<span class="step-title">Generate Dataset</span>
+					</div>
+				</div>
+				<div class="step-item" data-step="3">
+					<div class="step-indicator">
+						<span class="step-number">3</span>
+					</div>
+					<div class="step-content">
+						<span class="step-title">Plot Dataset</span>
+					</div>
+				</div>
+				<div class="step-item" data-step="4">
+					<div class="step-indicator">
+						<span class="step-number">4</span>
+					</div>
+					<div class="step-content">
+						<span class="step-title">Initialize Weights</span>
+					</div>
+				</div>
+				<div class="step-item" data-step="5">
+					<div class="step-indicator">
+						<span class="step-number">5</span>
+					</div>
+					<div class="step-content">
+						<span class="step-title">Plot Initial Boundary</span>
+					</div>
+				</div>
+				<div class="step-item" data-step="6">
+					<div class="step-indicator">
+						<span class="step-number">6</span>
+					</div>
+					<div class="step-content">
+						<span class="step-title">Define Training Function</span>
+					</div>
+				</div>
+				<div class="step-item" data-step="7">
+					<div class="step-indicator">
+						<span class="step-number">7</span>
+					</div>
+					<div class="step-content">
+						<span class="step-title">Run Training</span>
+					</div>
+				</div>
+			</div>
+			<div class="step-sidebar-footer">
+				<button class="run-all-btn" id="downloadBtn">
+					Download Experiment
+				</button>
+				<button class="reset-btn" id="resetBtn">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+						<path
+							d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+					</svg>
+					Reset
+				</button>
+			</div>
+		</aside>
+
+		<!-- Main Notebook Area -->
+		<main class="notebook-area">
+			<div class="notebook-header">
+				<h1>Implementation and simulation of Perceptron</h1>
+			</div>
+
+			<!-- Parameter Selector -->
+			<div class="param-selector">
+				<div class="param-group">
+					<label for="operationSelect">Operation:</label>
+					<select id="operationSelect" class="param-dropdown wide">
+						<option value="OR" selected>OR Gate (Linearly Separable)</option>
+						<option value="XOR">XOR Gate (Non-Linearly Separable)</option>
+					</select>
+				</div>
+				<div class="param-group">
+					<label for="lrSelect">Learning Rate:</label>
+					<select id="lrSelect" class="param-dropdown">
+						<option value="0.1" selected>0.1</option>
+						<option value="0.05">0.05</option>
+					</select>
+				</div>
+			</div>
+
+			<!-- Cell 1: Import Libraries -->
+			<div class="notebook-cell" data-cell="1" data-step="1">
+				<div class="cell-header">
+					<span class="cell-label">Step 1: Import Libraries</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+<span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content text-output">
+						<span class="success-text">✓ Libraries imported successfully</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 2: Generate Dataset -->
+			<div class="notebook-cell" data-cell="2" data-step="2">
+				<div class="cell-header">
+					<span class="cell-label">Step 2: Generate Dataset</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python">data = {
+    <span class="string">"x1"</span>: [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>],
+    <span class="string">"x2"</span>: [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>],
+    <span class="string">"label"</span>: <span id="datasetLabels">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]</span> 
+}
+
+df = pd.DataFrame(data)
+
+df.head()</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content text-output">
+						<div class="params-table">
+							<table>
+								<thead>
+									<tr>
+										<th>x1</th>
+										<th>x2</th>
+										<th>label</th>
+									</tr>
+								</thead>
+								<tbody id="datasetTable">
+									<tr>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<td>0</td>
+										<td>1</td>
+										<td>1</td>
+									</tr>
+									<tr>
+										<td>1</td>
+										<td>0</td>
+										<td>1</td>
+									</tr>
+									<tr>
+										<td>1</td>
+										<td>1</td>
+										<td>1</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 3: Plot Dataset -->
+			<div class="notebook-cell" data-cell="3" data-step="3">
+				<div class="cell-header">
+					<span class="cell-label">Step 3: Plot Dataset</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python">plt.figure(figsize=(<span class="number">6</span>,<span class="number">6</span>))
+
+<span class="comment"># Plot class 0</span>
+plt.scatter(df[df[<span class="string">'label'</span>]==<span class="number">0</span>][<span class="string">'x1'</span>], 
+            df[df[<span class="string">'label'</span>]==<span class="number">0</span>][<span class="string">'x2'</span>], 
+            c=<span class="string">'blue'</span>, s=<span class="number">100</span>, label=<span class="string">'Class 0'</span>)
+
+<span class="comment"># Plot class 1</span>
+plt.scatter(df[df[<span class="string">'label'</span>]==<span class="number">1</span>][<span class="string">'x1'</span>], 
+            df[df[<span class="string">'label'</span>]==<span class="number">1</span>][<span class="string">'x2'</span>], 
+            c=<span class="string">'red'</span>, s=<span class="number">100</span>, label=<span class="string">'Class 1'</span>)
+
+plt.title(<span class="string" id="plotTitle">"OR Dataset Plot"</span>)
+plt.xlabel(<span class="string">"x1"</span>)
+plt.ylabel(<span class="string">"x2"</span>)
+plt.grid(<span class="keyword">True</span>)
+plt.legend()
+plt.show()</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="chart-container">
+							<canvas id="datasetChart"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 4: Initialize Weights -->
+			<div class="notebook-cell" data-cell="4" data-step="4">
+				<div class="cell-header">
+					<span class="cell-label">Step 4: Initialize Weights</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python">np.random.seed(<span class="number">42</span>)
+w1 = np.random.uniform(-<span class="number">1</span>, <span class="number">1</span>)
+w2 = np.random.uniform(-<span class="number">1</span>, <span class="number">1</span>)
+b  = np.random.uniform(-<span class="number">1</span>, <span class="number">1</span>)
+
+learning_rate = <span class="number" id="codeLr">0.1</span>
+
+w1 = <span id="codeW1">-0.4</span>
+w2 = <span id="codeW2">0.2</span>
+b = <span id="codeB">-0.1</span>
+
+<span class="builtin">print</span>(<span class="string">"\nInitial Parameters:"</span>)
+<span class="builtin">print</span>(<span class="format">f"w1 = {w1:.3f}, w2 = {w2:.3f}, b = {b:.3f}"</span>)
+<span class="builtin">print</span>(<span class="format">f"Learning Rate = {learning_rate}"</span>)</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content text-output">
+						<pre id="initialParams">Initial Parameters:
+w1 = -0.400, w2 = 0.200, b = -0.100
+Learning Rate = 0.1</pre>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 5: Plot Initial Decision Boundary -->
+			<div class="notebook-cell" data-cell="5" data-step="5">
+				<div class="cell-header">
+					<span class="cell-label">Step 5: Plot Initial Decision Boundary</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="keyword">def</span> <span class="function">plot_decision_boundary</span>(w1, w2, b):
+    x_vals = np.linspace(-<span class="number">0.5</span>, <span class="number">1.5</span>, <span class="number">100</span>)
+    
+    <span class="keyword">if</span> w2 != <span class="number">0</span>:
+        y_vals = -(w1 * x_vals + b) / w2
+    <span class="keyword">else</span>:
+        <span class="comment"># vertical line if w2 = 0</span>
+        y_vals = np.zeros_like(x_vals)
+
+    plt.plot(x_vals, y_vals, label=<span class="string">"Decision Boundary"</span>, color=<span class="string">"green"</span>)
+
+plt.figure(figsize=(<span class="number">7</span>,<span class="number">7</span>))
+
+<span class="comment"># Plot class 0</span>
+plt.scatter(df[df[<span class="string">'label'</span>]==<span class="number">0</span>][<span class="string">'x1'</span>],
+            df[df[<span class="string">'label'</span>]==<span class="number">0</span>][<span class="string">'x2'</span>],
+            c=<span class="string">'blue'</span>, s=<span class="number">120</span>, label=<span class="string">'Class 0'</span>)
+
+<span class="comment"># Plot class 1</span>
+plt.scatter(df[df[<span class="string">'label'</span>]==<span class="number">1</span>][<span class="string">'x1'</span>],
+            df[df[<span class="string">'label'</span>]==<span class="number">1</span>][<span class="string">'x2'</span>],
+            c=<span class="string">'red'</span>, s=<span class="number">120</span>, label=<span class="string">'Class 1'</span>)
+
+<span class="comment"># Plot boundary</span>
+plot_decision_boundary(w1, w2, b)
+
+plt.title(<span class="string" id="boundaryTitle">"OR Dataset with Initial Random Decision Boundary"</span>)
+plt.xlabel(<span class="string">"x1"</span>)
+plt.ylabel(<span class="string">"x2"</span>)
+plt.xlim(-<span class="number">0.5</span>, <span class="number">1.5</span>)
+plt.ylim(-<span class="number">0.5</span>, <span class="number">1.5</span>)
+plt.grid(<span class="keyword">True</span>)
+plt.legend()
+plt.show()</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="chart-container">
+							<canvas id="initialBoundaryChart"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 6: Define Training Function -->
+			<div class="notebook-cell" data-cell="6" data-step="6">
+				<div class="cell-header">
+					<span class="cell-label">Step 6: Define Training Function</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="comment"># --------------------------</span>
+<span class="comment"># Plot Decision Boundary</span>
+<span class="comment"># --------------------------</span>
+<span class="keyword">def</span> <span class="function">plot_decision_boundary</span>(df, w1, w2, b, epoch_num):
+    plt.figure(figsize=(<span class="number">6</span>,<span class="number">6</span>))
+
+    <span class="comment"># Plot points</span>
+    plt.scatter(df[df[<span class="string">'label'</span>]==<span class="number">0</span>][<span class="string">'x1'</span>], df[df[<span class="string">'label'</span>]==<span class="number">0</span>][<span class="string">'x2'</span>],
+                color=<span class="string">'blue'</span>, s=<span class="number">120</span>, label=<span class="string">'Class 0'</span>)
+    plt.scatter(df[df[<span class="string">'label'</span>]==<span class="number">1</span>][<span class="string">'x1'</span>], df[df[<span class="string">'label'</span>]==<span class="number">1</span>][<span class="string">'x2'</span>],
+                color=<span class="string">'red'</span>, s=<span class="number">120</span>, label=<span class="string">'Class 1'</span>)
+
+    <span class="comment"># Boundary</span>
+    x_vals = np.linspace(-<span class="number">0.5</span>, <span class="number">1.5</span>, <span class="number">100</span>)
+
+    <span class="keyword">if</span> w2 != <span class="number">0</span>:
+        y_vals = -(w1 * x_vals + b) / w2
+        plt.plot(x_vals, y_vals, <span class="string">'g'</span>, label=<span class="string">"Decision Boundary"</span>)
+    <span class="keyword">else</span>:
+        plt.axvline(-b/w1, color=<span class="string">'green'</span>)
+
+    plt.title(<span class="format">f"Decision Boundary After Epoch {epoch_num}"</span>)
+    plt.xlim(-<span class="number">0.5</span>, <span class="number">1.5</span>)
+    plt.ylim(-<span class="number">0.5</span>, <span class="number">1.5</span>)
+    plt.grid(<span class="keyword">True</span>)
+    plt.legend()
+    plt.show()
+
+
+<span class="comment"># --------------------------</span>
+<span class="comment"># Perceptron Training (Multiple Epochs)</span>
+<span class="comment"># --------------------------</span>
+<span class="keyword">def</span> <span class="function">perceptron_train</span>(df, w1, w2, b, lr, epochs):
+
+    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">1</span>, epochs+<span class="number">1</span>):
+        <span class="builtin">print</span>(<span class="format">f"----EPOCH {epoch}----"</span>)
+
+        correct = <span class="number">0</span>
+
+        <span class="keyword">for</span> i, row <span class="keyword">in</span> df.iterrows():
+            x1, x2, y = row[<span class="string">"x1"</span>], row[<span class="string">"x2"</span>], row[<span class="string">"label"</span>]
+
+            <span class="comment"># Prediction</span>
+            linear_output = w1*x1 + w2*x2 + b
+            y_pred = <span class="number">1</span> <span class="keyword">if</span> linear_output >= <span class="number">0</span> <span class="keyword">else</span> <span class="number">0</span>
+
+            <span class="comment"># Count accuracy</span>
+            <span class="keyword">if</span> y == y_pred:
+                correct += <span class="number">1</span>
+
+            <span class="comment"># Error</span>
+            error = y - y_pred
+
+            <span class="comment"># Update</span>
+            w1 = w1 + lr * error * x1
+            w2 = w2 + lr * error * x2
+            b  = b  + lr * error
+
+        <span class="comment"># Accuracy for this epoch</span>
+        accuracy = correct / <span class="builtin">len</span>(df)
+        <span class="builtin">print</span>(<span class="format">f"Accuracy after Epoch {epoch}: {accuracy*100:.2f}%"</span>)
+        <span class="builtin">print</span>(<span class="format">f"Updated Weights -> w1={w1:.3f}, w2={w2:.3f}, b={b:.3f}"</span>)
+
+        <span class="comment"># Visualize at end of epoch</span>
+        plot_decision_boundary(df, w1, w2, b, epoch)
+
+    <span class="keyword">return</span> w1, w2, b</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content text-output">
+						<span class="success-text">✓ perceptron_train function defined successfully</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 7: Run Training -->
+			<div class="notebook-cell" data-cell="7" data-step="7">
+				<div class="cell-header">
+					<span class="cell-label">Step 7: Run Training</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python">final_w1, final_w2, final_b = perceptron_train(df, w1, w2, b, learning_rate, epochs=<span class="number">10</span>)
+
+<span class="comment"># ---- FINAL EVALUATION AFTER TRAINING ----</span>
+<span class="keyword">def</span> <span class="function">predict</span>(x1, x2, w1, w2, b):
+    linear_output = w1*x1 + w2*x2 + b
+    <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> linear_output >= <span class="number">0</span> <span class="keyword">else</span> <span class="number">0</span>
+
+correct = <span class="number">0</span>
+total = <span class="builtin">len</span>(df)
+
+<span class="builtin">print</span>(<span class="string">"\nFinal Predictions After Training:"</span>)
+<span class="keyword">for</span> i, row <span class="keyword">in</span> df.iterrows():
+    x1, x2, y = row[<span class="string">"x1"</span>], row[<span class="string">"x2"</span>], row[<span class="string">"label"</span>]
+    y_pred = predict(x1, x2, final_w1, final_w2, final_b)
+    <span class="builtin">print</span>(<span class="format">f"Input=({x1}, {x2}) → Predicted={y_pred}, Actual={y}"</span>)
+    <span class="keyword">if</span> y_pred == y:
+        correct += <span class="number">1</span>
+
+accuracy = correct / total * <span class="number">100</span>
+<span class="builtin">print</span>(<span class="format">f"\nFinal Accuracy on Training Data = {accuracy:.2f}%"</span>)</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="training-output">
+							<pre id="trainingLog">Loading training data...</pre>
+						</div>
+						<div class="test-loss" style="margin-top: 20px;">
+							<span class="loss-label">Final Accuracy:</span>
+							<span class="loss-value" id="finalAccuracy">100.00%</span>
+						</div>
+						<div class="params-table" style="margin-top: 20px;">
+							<table>
+								<thead>
+									<tr>
+										<th>Input (x1, x2)</th>
+										<th>Predicted</th>
+										<th>Actual</th>
+									</tr>
+								</thead>
+								<tbody id="predictionsTable">
+									<!-- Will be populated by JS -->
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Completion message -->
+			<div class="completion-message hidden" id="completionMessage">
+				<div class="completion-icon">🎉</div>
+				<div class="completion-text">
+					<h3>Experiment Completed!</h3>
+					<p>You have successfully trained a Perceptron model. The results show how well a single-layer
+						perceptron can learn linearly separable patterns like OR gate, but struggles with non-linearly
+						separable patterns like XOR gate!</p>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<!-- Loading Overlay -->
+	<div class="loading-overlay hidden" id="loadingOverlay">
+		<div class="loading-spinner"></div>
+		<div class="loading-text">Executing...</div>
+	</div>
+
+	<script src="./js/data.js"></script>
+	<script src="./js/main.js"></script>
 </body>
+
 </html>

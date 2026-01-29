@@ -2,37 +2,173 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
+      "question": "When does a perceptron update its weights during training?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "After every epoch, regardless of accuracy",
+        "b": "Only when it makes an incorrect prediction",
+        "c": "Before making any predictions",
+        "d": "Only in the first epoch"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "Incorrect because weight updates happen during the epoch, not after it.",
+        "b": "Correct because weights change only when error ≠ 0, which occurs during misclassification.",
+        "c": "Incorrect because predictions must be made first to calculate errors.",
+        "d": "Incorrect because updates continue throughout all epochs when errors occur."
       },
-      "correctAnswer": "a",
+      "correctAnswer": "b",
       "difficulty": "beginner"
     },
     {
-      "question": "This is a Sample Question 2?",
+      "question": "What is the first step a perceptron takes when making a prediction?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "Apply the activation function",
+        "b": "Calculate the weighted sum of inputs plus bias",
+        "c": "Update the weights",
+        "d": "Generate random outputs"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "Incorrect because the weighted sum must be calculated first.",
+        "b": "Correct because z = w₁·x₁ + w₂·x₂ + b is computed before applying the step function.",
+        "c": "Incorrect because weights are updated after prediction and error calculation.",
+        "d": "Incorrect because perceptrons make deterministic predictions based on learned parameters."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What output does the perceptron's step function produce when z = 0?",
+      "answers": {
+        "a": "0.5",
+        "b": "1",
+        "c": "-1",
+        "d": "Undefined"
+      },
+      "explanations": {
+        "a": "Incorrect because the step function produces binary outputs, not probabilities.",
+        "b": "Correct because the standard convention is: output = 1 if z ≥ 0.",
+        "c": "Incorrect because perceptrons output 0 or 1, not negative values.",
+        "d": "Incorrect because z = 0 is a defined case where the output is 1."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "If you observe the decision boundary after each epoch, what would you notice?",
+      "answers": {
+        "a": "It stays in the same position throughout training",
+        "b": "It rotates and shifts position trying to separate the classes",
+        "c": "It splits into multiple lines",
+        "d": "It becomes a curve"
+      },
+      "explanations": {
+        "a": "Incorrect because weight updates cause the boundary to move.",
+        "b": "Correct because changing weights alter the slope and position of the linear boundary.",
+        "c": "Incorrect because a single perceptron creates only one decision boundary.",
+        "d": "Incorrect because perceptron boundaries are always linear."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Which two XOR points are typically on opposite sides of the final decision boundary?",
+      "answers": {
+        "a": "(0,0) and (0,1)",
+        "b": "(1,0) and (1,1)",
+        "c": "(0,0) and (1,1), or (0,1) and (1,0)",
+        "d": "All four points are on the same side"
+      },
+      "explanations": {
+        "a": "Incorrect because these are adjacent points, not diagonally opposite.",
+        "b": "Incorrect because these are also adjacent points.",
+        "c": "Correct because the linear boundary separates diagonally opposite points, though not correctly for XOR.",
+        "d": "Incorrect because the boundary separates the space into two regions."
       },
       "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What does the error value represent in the perceptron learning rule?",
+      "answers": {
+        "a": "The learning rate",
+        "b": "The difference between actual and predicted labels",
+        "c": "The total number of training epochs",
+        "d": "The weight value"
+      },
+      "explanations": {
+        "a": "Incorrect because learning rate is a separate hyperparameter.",
+        "b": "Correct because error = y_actual - y_predicted.",
+        "c": "Incorrect because error is calculated per prediction, not related to epoch count.",
+        "d": "Incorrect because error is used to update weights, not the weight itself."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "When does the perceptron learning algorithm update the bias term?",
+      "answers": {
+        "a": "Only at the end of each epoch",
+        "b": "When there is a prediction error, using: b = b + learning_rate × error",
+        "c": "The bias never changes during training",
+        "d": "Only when accuracy drops below 50%"
+      },
+      "explanations": {
+        "a": "Incorrect because bias updates happen for each misclassified point.",
+        "b": "Correct because bias is updated the same way as weights, but without multiplying by input.",
+        "c": "Incorrect because bias is a learnable parameter that gets updated.",
+        "d": "Incorrect because updates depend on individual prediction errors, not overall accuracy."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What is the fundamental lesson learned from the XOR experiment?",
+      "answers": {
+        "a": "Perceptrons are useless for all problems",
+        "b": "More training epochs will eventually solve any problem",
+        "c": "Single layer perceptrons have a fundamental limitation in solving non-linearly separable problems",
+        "d": "Learning rate is the most important hyperparameter"
+      },
+      "explanations": {
+        "a": "Incorrect because perceptrons work well for linearly separable problems.",
+        "b": "Incorrect because XOR cannot be solved regardless of training duration.",
+        "c": "Correct because this is the key insight from the XOR problem and its historical significance.",
+        "d": "Incorrect because the limitation is architectural, not about hyperparameter tuning."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Which components of a perceptron are adjusted during the training process?",
+      "answers": {
+        "a": "Only the weights",
+        "b": "Both weights and bias",
+        "c": "Only the input values",
+        "d": "Only the activation function"
+      },
+      "explanations": {
+        "a": "Incorrect because bias is also updated during training.",
+        "b": "Correct because the learning algorithm updates both w and b based on errors.",
+        "c": "Incorrect because inputs are fixed data; they are not learned parameters.",
+        "d": "Incorrect because the activation function remains constant during training."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What is an \"epoch\" in the context of perceptron training?",
+      "answers": {
+        "a": "A single prediction made by the perceptron",
+        "b": "One complete pass through the entire training dataset",
+        "c": "The final accuracy of the model",
+        "d": "The time taken to train the model"
+      },
+      "explanations": {
+        "a": "Incorrect because an epoch involves processing all training examples.",
+        "b": "Correct because an epoch means the perceptron has seen and learned from every training sample once.",
+        "c": "Incorrect because accuracy is a metric, not a training iteration.",
+        "d": "Incorrect because epoch refers to iterations, not time duration."
+      },
+      "correctAnswer": "b",
       "difficulty": "beginner"
     }
   ]

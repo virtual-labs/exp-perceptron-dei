@@ -34,8 +34,8 @@ An adjustable constant added to the weighted sum that shifts the decision bounda
 
 **Key Difference Between Weights and Bias:**
 
-- **Weights** determine the *slope* — how steep the line is and its direction
-- **Bias** determines the *position* — where the line sits in the coordinate space
+- **Weights** determine the *slope* , how steep the line is and its direction
+- **Bias** determines the *position* , where the line sits in the coordinate space
 
 Together they define a complete line, similar to y = mx + c, where weights act like slope 'm' and bias acts like y-intercept 'c'. The bias term is shown in Fig. 1.
 
@@ -65,6 +65,8 @@ The step activation function and output of the perceptron are shown in Fig. 1.
 ![Fig. 1. Architecture of a Single-Layer Perceptron](images/perceptron_architecture.png)
 
 **Fig. 1.** Architecture of a Single-Layer Perceptron showing inputs, weights, summation unit, bias, and step activation function.
+
+Source: Wikimedia Commons (https://commons.wikimedia.org/wiki/File:Perceptron_moj.png)
 
 ---
 
@@ -102,9 +104,9 @@ When the perceptron makes an error, it adjusts each weight to reduce that error:
 
 where:
 
-- **η (eta)** — Learning rate: Controls how big the adjustment steps are
-- **error** — Tells us the direction and magnitude to adjust
-- **xᵢ** — The input value that contributed to this weight
+- **η (eta)** : Learning rate: Controls how big the adjustment steps are
+- **error** : Tells us the direction and magnitude to adjust
+- **xᵢ** : The input value that contributed to this weight
 
 *Example:* If the perceptron predicted 0 but the answer was 1, the error is +1, so weights connected to active inputs (xᵢ = 1) increase, making the perceptron more likely to predict 1 next time.
 
@@ -118,7 +120,7 @@ This shifts the decision boundary to better separate the classes.
 
 **Step 5: Repeat for All Training Examples**
 
-The perceptron goes through every data point in the training set, making predictions and adjusting weights. One complete pass through all data points is called an **epoch**.
+The perceptron goes through every data point in the training set, making predictions and adjusting weights. One complete pass through all data points is called an epoch.
 
 **Step 6: Train for Multiple Epochs**
 
@@ -145,8 +147,8 @@ A dataset is **linearly separable** if there exists a straight line (in 2D), pla
 
 **Examples of linearly separable problems:**
 
-- **AND gate:** Can be separated by a single line
-- **OR gate:** Can be separated by a single line
+- **AND gate:** (0,0) → 0, (0,1) → 0, (1,0) → 0, (1,1) → 1
+- **OR gate:** (0,0) → 0, (0,1) → 1, (1,0) → 1, (1,1) → 1
 
 **Examples of non-linearly separable problems:**
 
@@ -167,14 +169,14 @@ XOR (Exclusive OR) is a Boolean logic function that outputs 1 when the inputs ar
 
 When plotted in 2D space, the XOR problem shows a diagonal pattern where:
 
-- Points (0,0) and (1,1) belong to Class 0 (output = 0)
-- Points (0,1) and (1,0) belong to Class 1 (output = 1)
+- Points (0,0) and (1,1) belong to Class 0 (Blue)
+- Points (0,1) and (1,0) belong to Class 1 (Red))
 
 **Why Perceptrons Cannot Solve XOR:**
 
 No matter how we adjust w₁, w₂, and b, we cannot draw a single straight line that separates these classes. The perceptron will keep updating its weights indefinitely, oscillating between different incorrect solutions, never achieving 100% accuracy.
 
-**The Solution — Multi-Layer Perceptrons:**
+**The Solution : Multi-Layer Perceptrons:**
 
 The solution came with the development of multi-layer perceptrons (MLPs) with hidden layers and non-linear activation functions. A two-layer neural network with at least 2 hidden neurons can solve XOR by creating multiple decision boundaries that, when combined, separate the classes correctly.
 

@@ -61,7 +61,7 @@ const elements = {
 
 function downloadExperiment() {
     const link = document.createElement('a');
-    link.href = './assets/Perceptron.pdf';
+    link.href = './assets/Exp-1_Perceptron.pdf';
     link.download = 'Perceptron_Experiment.pdf';
     document.body.appendChild(link);
     link.click();

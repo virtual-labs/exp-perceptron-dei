@@ -33,7 +33,7 @@ An adjustable constant added to the weighted sum that shifts the decision bounda
 - **Weights** determine the *slope* , how steep the line is and its direction
 - **Bias** determines the *position* , where the line sits in the coordinate space
 
-Together they define a complete line, similar to y = mx + c, where weights act like slope 'm' and bias acts like y-intercept 'c'. The bias term $w_o(t) = θ$ is as seen in Figure 1.
+Together they define a complete line, similar to y = mx + c, where weights act like slope 'm' and bias acts like y-intercept 'c'. The bias term $w_o(t) = \theta$ is as seen in Figure 1.
 
 **4. Net Input (Weighted Sum)**
 
@@ -60,10 +60,7 @@ The step activation function and output of the perceptron are shown in Fig. 1.
 
 ![Fig. 1. Architecture of a Single-Layer Perceptron](images/perceptron_architecture.png)
 
-**Fig. 1.** Fig. 1: Architecture of a Single-Layer Perceptron showing inputs, weights, summation unit, and step activation function.
-
-(Source: M. Minsky and S. Papert, Perceptrons: An Introduction to Computational Geometry,
-MIT Press, 1969.)
+**Fig. 1.** Fig. 1: Architecture of a Single-Layer Perceptron showing inputs, weights, summation unit, bias, and step activation function.
 
 ---
 

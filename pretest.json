@@ -1,0 +1,175 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "What type of decision boundary does a single-layer perceptron create?",
+      "answers": {
+        "a": "A circular boundary",
+        "b": "A linear hyperplane",
+        "c": "A polynomial curve",
+        "d": "Multiple disconnected regions"
+      },
+      "explanations": {
+        "a": "Incorrect because circles are non-linear boundaries requiring complex functions.",
+        "b": "Correct because perceptrons create linear decision boundaries defined by w·x + b = 0.",
+        "c": "Incorrect because polynomial curves are non-linear and require multiple layers.",
+        "d": "Incorrect because a single perceptron creates one continuous linear boundary."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What does it mean for a dataset to be linearly separable?",
+      "answers": {
+        "a": "The data can be separated by a straight line or hyperplane",
+        "b": "The data points are arranged in a line",
+        "c": "The dataset has only linear features",
+        "d": "All data points have the same label"
+      },
+      "explanations": {
+        "a": "Correct because linear separability means a linear boundary can perfectly divide the classes.",
+        "b": "Incorrect because linear separability refers to class separation, not point arrangement.",
+        "c": "Incorrect because feature types don't determine separability.",
+        "d": "Incorrect because this would mean no classification problem exists."
+      },
+      "correctAnswer": "a",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What is the XOR problem in the context of perceptrons?",
+      "answers": {
+        "a": "A linearly separable problem that perceptrons can easily solve",
+        "b": "A non-linearly separable problem that single-layer perceptrons cannot solve",
+        "c": "A problem with too much training data",
+        "d": "A convergence issue due to wrong learning rate"
+      },
+      "explanations": {
+        "a": "Incorrect because XOR is the classic example of a non-linearly separable problem.",
+        "b": "Correct because XOR requires non-linear decision boundaries that single perceptrons cannot create.",
+        "c": "Incorrect because XOR has only 4 data points, not an excess of data.",
+        "d": "Incorrect because no learning rate can make a perceptron solve XOR."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "In the perceptron learning rule, when are weights updated?",
+      "answers": {
+        "a": "Only when the prediction is correct",
+        "b": "After every epoch regardless of errors",
+        "c": "Only when the perceptron makes an incorrect prediction",
+        "d": "Before making any predictions"
+      },
+      "explanations": {
+        "a": "Incorrect because weights don't change when predictions are already correct.",
+        "b": "Incorrect because updates happen based on individual prediction errors.",
+        "c": "Correct because the error term (y - ŷ) is zero for correct predictions, causing no weight change.",
+        "d": "Incorrect because weights are updated after predictions and error calculation."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What happens to the weights when the perceptron makes a correct prediction?",
+      "answers": {
+        "a": "They are reset to zero",
+        "b": "They remain unchanged",
+        "c": "They increase by the learning rate",
+        "d": "They are randomly reinitialised"
+      },
+      "explanations": {
+        "a": "Incorrect because resetting would erase all learned information.",
+        "b": "Correct because the error term becomes zero (y - ŷ = 0), resulting in no weight updates.",
+        "c": "Incorrect because weight changes depend on the error, not just learning rate.",
+        "d": "Incorrect because random changes would disrupt the learning process."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What role does the learning rate play in perceptron training?",
+      "answers": {
+        "a": "It determines how many epochs to train",
+        "b": "It controls the step size of weight updates",
+        "c": "It sets the initial weights",
+        "d": "It defines the activation function"
+      },
+      "explanations": {
+        "a": "Incorrect because the number of epochs is set separately from learning rate.",
+        "b": "Correct because learning rate scales the magnitude of weight adjustments based on errors.",
+        "c": "Incorrect because initial weights are typically set randomly or to zero.",
+        "d": "Incorrect because the activation function is a separate component."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What does the bias term 'b' allow the perceptron to do?",
+      "answers": {
+        "a": "Increase the number of input features",
+        "b": "Move the decision boundary away from the origin",
+        "c": "Make the decision boundary curved",
+        "d": "Classify multiple classes simultaneously"
+      },
+      "explanations": {
+        "a": "Incorrect because bias doesn't add features, it adjusts the decision boundary.",
+        "b": "Correct because bias shifts the line's position without needing all inputs to be zero.",
+        "c": "Incorrect because perceptron boundaries are always linear regardless of bias.",
+        "d": "Incorrect because single perceptrons are binary classifiers."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Which logic gate CAN be solved by a single-layer perceptron?",
+      "answers": {
+        "a": "XOR gate",
+        "b": "XNOR gate",
+        "c": "AND gate",
+        "d": "None of the above"
+      },
+      "explanations": {
+        "a": "Incorrect because XOR is non-linearly separable.",
+        "b": "Incorrect because XNOR is also non-linearly separable, being the inverse of XOR.",
+        "c": "Correct because AND is linearly separable and can be solved by a single perceptron.",
+        "d": "Incorrect because AND and OR gates are linearly separable."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What mathematical equation defines the decision boundary of a perceptron in 2D?",
+      "answers": {
+        "a": "w1·x1 + w2·x2 + b = 0",
+        "b": "w1·x1² + w2·x2² + b = 0",
+        "c": "x1 + x2 = 1",
+        "d": "sigmoid(w1·x1 + w2·x2 + b) = 0.5"
+      },
+      "explanations": {
+        "a": "Correct because this linear equation defines the line separating the two classes.",
+        "b": "Incorrect because this represents a quadratic curve, not achievable with single-layer perceptrons.",
+        "c": "Incorrect because the weights and bias are learnable parameters, not fixed to these values.",
+        "d": "Incorrect because standard perceptrons use step functions, not sigmoid."
+      },
+      "correctAnswer": "a",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What fundamental limitation did the XOR problem reveal about single-layer perceptrons?",
+      "answers": {
+        "a": "They require too much training data",
+        "b": "They can only create linear decision boundaries",
+        "c": "They cannot handle binary inputs",
+        "d": "They are too slow to train"
+      },
+      "explanations": {
+        "a": "Incorrect because XOR uses only 4 data points; data amount isn't the issue.",
+        "b": "Correct because the inability to solve XOR demonstrated that perceptrons cannot learn non-linear patterns.",
+        "c": "Incorrect because perceptrons work well with binary inputs for linearly separable problems.",
+        "d": "Incorrect because perceptrons train quickly; the issue is their representational capacity."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    }
+  ]
+}

@@ -62,8 +62,7 @@ The step activation function and output of the perceptron are shown in Fig. 1.
 
 **Fig. 1.** Fig. 1: Architecture of a Single-Layer Perceptron showing inputs, weights, summation unit, and step activation function.
 
-(Source: M. Minsky and S. Papert, Perceptrons: An Introduction to Computational Geometry,
-MIT Press, 1969.)
+(Source: Artificial Neuron (MIT xPro))
 
 ---
 

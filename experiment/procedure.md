@@ -3,77 +3,85 @@
 #### Step 1: Import Required Libraries
 Import necessary Python libraries including pandas for data handling, NumPy for numerical computations, and Matplotlib for visualisation of the dataset and decision boundaries.
 
-#### Step 2: Create XOR Dataset
-Generate the XOR truth table with four data points:
+#### Step 2: Create Dataset
 
-| x₁ | x₂ | Class (y) |
-|:---:|:---:|:---:|
-| 0 | 0 | 0 |
-| 0 | 1 | 1 |
-| 1 | 0 | 1 |
-| 1 | 1 | 0 |
+Generate the OR truth table with four data points:
+
+$$
+(0,\,0) \rightarrow \text{Class } 0 \qquad (0,\,1) \rightarrow \text{Class } 1 \qquad (1,\,0) \rightarrow \text{Class } 1 \qquad (1,\,1) \rightarrow \text{Class } 1
+$$
+
+If doing for XOR, generate the XOR truth table with four data points:
+
+$$
+(0,\,0) \rightarrow \text{Class } 0 \qquad (0,\,1) \rightarrow \text{Class } 1 \qquad (1,\,0) \rightarrow \text{Class } 1 \qquad (1,\,1) \rightarrow \text{Class } 0
+$$
 
 Store this data in a pandas DataFrame for easy manipulation and visualisation.
 
-#### Step 3: Visualise the XOR Dataset
-Create a scatter plot showing the four XOR data points with:
-- **Blue dots** representing Class 0: points (0,0) and (1,1)
-- **Red dots** representing Class 1: points (0,1) and (1,0)
+#### Step 3: Visualise the Dataset
+Create a scatter plot showing the four data points with:
+- **Blue dots** representing Class 0
+- **Red dots** representing Class 1
 
-This visualisation clearly shows the diagonal pattern that makes XOR non-linearly separable.
+This visualisation shows a pattern that is linearly separable for OR. For XOR, the diagonal pattern makes it non-linearly separable.
 
 #### Step 4: Initialise Perceptron Parameters
 Set random seed for reproducibility and initialise:
-- **w₁, w₂**: Random weights uniformly distributed between -1 and 1
-- **b**: Random bias uniformly distributed between -1 and 1
-- **learning_rate**: Set to 0.05 (or 0.1 in alternate version)
+- $w_1,\, w_2$: Random weights uniformly distributed between $-1$ and $1$
+- $b$: Random bias uniformly distributed between $-1$ and $1$
+- $\eta$ (`learning_rate`): Set to $0.05$ (or $0.1$ in alternate version)
 
 Print initial parameters to track how they change during training.
 
 #### Step 5: Define Decision Boundary Plotting Function
 Create a function `plot_decision_boundary(w1, w2, b)` that:
-1. Calculates the decision boundary line using equation: `w₁·x₁ + w₂·x₂ + b = 0`
-2. Rearranges to: `x₂ = -(w₁·x₁ + b) / w₂`
-3. Plots this line in green on the XOR scatter plot
-4. Handles the case when `w₂ = 0` (vertical line)
+1. Calculates the decision boundary line using equation: $w_1 \cdot x_1 + w_2 \cdot x_2 + b = 0$
+2. Rearranges to: $x_2 = -\,(w_1 \cdot x_1 + b)\;/\;w_2$
+3. Plots this line in green on the scatter plot
+4. Handles the case when $w_2 = 0$ (vertical line)
 
 #### Step 6: Visualise Initial Random Decision Boundary
-Plot the XOR dataset along with the initial random decision boundary to show the starting position before any training occurs. This demonstrates how randomly initialised weights create an arbitrary separation.
+Plot the dataset along with the initial random decision boundary to show the starting position before any training occurs. This demonstrates how randomly initialised weights create an arbitrary separation.
 
 #### Step 7: Define Perceptron Training Function
 Implement `perceptron_train()` function that:
-- For each epoch:
-  - Initialise correct prediction counter
-  - For each data point:
-    - **Calculate linear output:** `linear_output = w₁·x₁ + w₂·x₂ + b`
-    - **Apply step activation:** `prediction = 1` if `linear_output ≥ 0` else `0`
-    - Count if prediction matches actual label
-    - **Calculate error:** `error = actual_label - prediction`
-    - **Update weights:** `w₁ = w₁ + learning_rate × error × x₁`
-    - **Update weights:** `w₂ = w₂ + learning_rate × error × x₂`
-    - **Update bias:** `b = b + learning_rate × error`
-  - **Calculate accuracy:** `accuracy = (correct_predictions / total_points) × 100`
-  - Print epoch results showing accuracy and updated parameters
-  - Visualise decision boundary after each epoch
-- Return final trained weights and bias.
+
+For each epoch:
+1. Initialise correct prediction counter
+2. For each data point:
+   - Calculate linear output: $\text{linear\_output} = w_1 \cdot x_1 + w_2 \cdot x_2 + b$
+   - Apply step activation: $y_{pred} = 1$ if $\text{linear\_output} \geq 0$ else $0$
+   - i. Count if prediction matches actual label
+   - ii. Calculate error: $\text{error} = y - y_{pred}$
+   - Update weights: $w_1 = w_1 + \eta \times \text{error} \times x_1$
+   - Update weights: $w_2 = w_2 + \eta \times \text{error} \times x_2$
+   - Update bias: $b = b + \eta \times \text{error}$
+   - Calculate accuracy: $\text{accuracy} = \dfrac{\text{correct}}{\text{total}} \times 100$
+3. Print epoch results showing accuracy and updated parameters
+4. Visualise decision boundary after each epoch
+
+Return final trained weights and bias.
 
 #### Step 8: Run Perceptron Training
-Execute the training function for 10 epochs on the XOR dataset.
+Execute the training function for 10 epochs on the dataset.
 
 #### Step 9: Visualise Training Progress
 After each epoch, generate and display a plot showing:
 - The current decision boundary (green line)
-- XOR data points (blue and red dots)
+- Data points (blue and red dots)
 - Epoch number in the title
 - Current accuracy percentage
 
-This creates a visual sequence showing how the perceptron tries but fails to find a correct solution.
+For OR, the boundary converges to a correct solution. For XOR, the perceptron fails to converge, demonstrating the limitation of single-layer perceptrons on non-linearly separable data.
 
 #### Step 10: Make Final Predictions
-Define `predict()` function and use it to make predictions on all four XOR points using the final trained weights. Display results showing:
+Define `predict()` function and use it to make predictions on all four points using the final trained weights. Display results showing:
 - Input coordinates
 - Predicted class
 - Actual class
 - Whether prediction is correct or incorrect
 
-Calculate and display final accuracy on the complete XOR dataset.
+Calculate and display final accuracy on the complete dataset.
+
+For the OR gate, the perceptron achieves $100\%$ accuracy. For the XOR gate, accuracy remains below $100\%$, confirming that a single-layer perceptron cannot solve non-linearly separable problems. This motivates the use of a Multi-Layer Perceptron (MLP) with hidden layers and backpropagation to learn non-linear decision boundaries.

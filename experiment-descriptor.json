@@ -2,7 +2,7 @@
   "unit-type": "lu",
   "label": "",
   "basedir": ".",
-  "LaTeXinMD": false,
+  "LaTeXinMD": true,
   "code-assessment": {
     "include": false,
     "languages": ["javascript"],

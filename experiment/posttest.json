@@ -2,7 +2,7 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "When does a perceptron update its weights during training?",
+      "question": "1. When does a perceptron update its weights during training?",
       "answers": {
         "a": "After every epoch, regardless of accuracy",
         "b": "Only when it makes an incorrect prediction",
@@ -19,7 +19,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What is the first step a perceptron takes when making a prediction?",
+      "question": "2. What is the first step a perceptron takes when making a prediction?",
       "answers": {
         "a": "Apply the activation function",
         "b": "Calculate the weighted sum of inputs plus bias",
@@ -36,7 +36,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What output does the perceptron's step function produce when z = 0?",
+      "question": "3. What output does the perceptron's step function produce when z = 0?",
       "answers": {
         "a": "0.5",
         "b": "1",
@@ -53,7 +53,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "If you observe the decision boundary after each epoch, what would you notice?",
+      "question": "4. If you observe the decision boundary after each epoch, what would you notice?",
       "answers": {
         "a": "It stays in the same position throughout training",
         "b": "It rotates and shifts position trying to separate the classes",
@@ -70,7 +70,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which two XOR points are typically on opposite sides of the final decision boundary?",
+      "question": "5. Which two XOR points are typically on opposite sides of the final decision boundary?",
       "answers": {
         "a": "(0,0) and (0,1)",
         "b": "(1,0) and (1,1)",
@@ -87,7 +87,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What does the error value represent in the perceptron learning rule?",
+      "question": "6. What does the error value represent in the perceptron learning rule?",
       "answers": {
         "a": "The learning rate",
         "b": "The difference between actual and predicted labels",
@@ -104,7 +104,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "When does the perceptron learning algorithm update the bias term?",
+      "question": "7. When does the perceptron learning algorithm update the bias term?",
       "answers": {
         "a": "Only at the end of each epoch",
         "b": "When there is a prediction error, using: b = b + learning_rate × error",
@@ -121,7 +121,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What is the fundamental lesson learned from the XOR experiment?",
+      "question": "8. What is the fundamental lesson learned from the XOR experiment?",
       "answers": {
         "a": "Perceptrons are useless for all problems",
         "b": "More training epochs will eventually solve any problem",
@@ -138,7 +138,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which components of a perceptron are adjusted during the training process?",
+      "question": "9. Which components of a perceptron are adjusted during the training process?",
       "answers": {
         "a": "Only the weights",
         "b": "Both weights and bias",
@@ -155,7 +155,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What is an \"epoch\" in the context of perceptron training?",
+      "question": "10. What is an \"epoch\" in the context of perceptron training?",
       "answers": {
         "a": "A single prediction made by the perceptron",
         "b": "One complete pass through the entire training dataset",

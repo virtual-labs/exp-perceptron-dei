@@ -28,31 +28,31 @@
         { x1: 1, x2: 1, label: 0 }
     ];
 
-    let stateP = { w1: 0.5, w2: -0.3, bias: 0.1, epoch: 0 };
-    let stateMLP = { 
-        hidden: 4,
-        wh1: [], wh2: [], bh: [],
-        wo: [], bo: 0,
-        epoch: 0
-    };
+    // Max epochs before auto-stop
+    const MAX_EPOCHS = 500;
+
+    let stateP = null;
+    let stateMLP = null;
     let training = false;
     let animId = null;
 
-    function reset() {
+    function initStates() {
         stateP = { w1: 0.5, w2: -0.3, bias: 0.1, epoch: 0 };
         const hidden = parseInt(hiddenSlider.value);
         stateMLP = {
             hidden: hidden,
-            wh1: Array(hidden).fill(0).map(() => Math.random() * 2 - 1),
-            wh2: Array(hidden).fill(0).map(() => Math.random() * 2 - 1),
-            bh: Array(hidden).fill(0).map(() => Math.random() * 0.2 - 0.1),
-            wo: Array(hidden).fill(0).map(() => Math.random() * 2 - 1),
-            bo: Math.random() * 0.2 - 0.1,
+            wh1: Array(hidden).fill(0).map(() => (Math.random() * 2 - 1) * 0.5),
+            wh2: Array(hidden).fill(0).map(() => (Math.random() * 2 - 1) * 0.5),
+            bh:  Array(hidden).fill(0).map(() => (Math.random() * 0.2 - 0.1)),
+            wo:  Array(hidden).fill(0).map(() => (Math.random() * 2 - 1) * 0.5),
+            bo:  Math.random() * 0.2 - 0.1,
             epoch: 0
         };
+    }
+
+    function reset() {
         training = false;
-        if (animId) clearTimeout(animId);
-        animId = null;
+        if (animId) { cancelAnimationFrame(animId); animId = null; }
         trainBtn.textContent = '▶ Train Both';
         epochPSpan.textContent = '0';
         accPSpan.textContent = '—';
@@ -60,6 +60,7 @@
         accMLPSpan.textContent = '—';
         accPSpan.classList.remove('success', 'failure');
         accMLPSpan.classList.remove('success', 'failure');
+        initStates();
         resizeCanvases();
         drawBoth();
     }
@@ -67,8 +68,9 @@
     function resizeCanvases() {
         [canvasP, canvasMLP].forEach(canvas => {
             const rect = canvas.parentElement.getBoundingClientRect();
-            canvas.width = rect.width * window.devicePixelRatio;
-            canvas.height = rect.height * window.devicePixelRatio;
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = Math.round(rect.width * dpr);
+            canvas.height = Math.round(rect.height * dpr);
             canvas.style.width = rect.width + 'px';
             canvas.style.height = rect.height + 'px';
         });
@@ -80,107 +82,174 @@
         return 1 / (1 + Math.exp(-x));
     }
 
+    // Convert data coords [0,1] → screen coords with padding
     function toScreen(x, y, w, h, pad) {
-        const sx = pad + ((x + 0.5) / 2.0) * (w - 2 * pad);
-        const sy = (h - pad) - ((y + 0.5) / 2.0) * (h - 2 * pad);
+        const sx = pad + x * (w - 2 * pad);
+        const sy = (h - pad) - y * (h - 2 * pad);
         return [sx, sy];
     }
 
-    function predictPerceptron(x1, x2, state) {
-        return (state.w1 * x1 + state.w2 * x2 + state.bias) >= 0 ? 1 : 0;
+    function predictPerceptron(x1, x2) {
+        return (stateP.w1 * x1 + stateP.w2 * x2 + stateP.bias) >= 0 ? 1 : 0;
     }
 
-    function predictMLP(x1, x2, state) {
-        // Forward pass
+    function predictMLP(x1, x2) {
         const hidden = [];
-        for (let i = 0; i < state.hidden; i++) {
-            const h = sigmoid(state.wh1[i] * x1 + state.wh2[i] * x2 + state.bh[i]);
-            hidden.push(h);
+        for (let i = 0; i < stateMLP.hidden; i++) {
+            hidden.push(sigmoid(stateMLP.wh1[i] * x1 + stateMLP.wh2[i] * x2 + stateMLP.bh[i]));
         }
-        let out = state.bo;
-        for (let i = 0; i < state.hidden; i++) {
-            out += state.wo[i] * hidden[i];
-        }
-        const prob = sigmoid(out);
-        return prob >= 0.5 ? 1 : 0;
+        let out = stateMLP.bo;
+        for (let i = 0; i < stateMLP.hidden; i++) out += stateMLP.wo[i] * hidden[i];
+        return sigmoid(out) >= 0.5 ? 1 : 0;
     }
 
-    function drawDecisionBoundary(ctx, w, h, pad, predictor) {
-        // Draw decision boundary by sampling grid
-        const resolution = 40;
-        const imgData = ctx.createImageData(w - 2 * pad, h - 2 * pad);
-        
-        for (let px = 0; px < w - 2 * pad; px++) {
-            for (let py = 0; py < h - 2 * pad; py++) {
-                // Convert pixel to data coordinates
-                const x1 = -0.5 + (px / (w - 2 * pad)) * 2.0;
-                const x2 = 0.5 - (py / (h - 2 * pad)) * 2.0;
-                
+    /**
+     * Draw decision regions using fillRect on a coarse grid.
+     * This respects the canvas 2D transform (DPR scaling) correctly.
+     */
+    function drawDecisionRegion(ctx, w, h, pad, predictor) {
+        const GRID = 40; // number of cells per axis
+        const cellW = (w - 2 * pad) / GRID;
+        const cellH = (h - 2 * pad) / GRID;
+
+        for (let gx = 0; gx < GRID; gx++) {
+            for (let gy = 0; gy < GRID; gy++) {
+                // centre of cell in data space [0,1]
+                const x1 = (gx + 0.5) / GRID;
+                const x2 = 1 - (gy + 0.5) / GRID; // flip y
+
                 const pred = predictor(x1, x2);
-                const idx = (py * (w - 2 * pad) + px) * 4;
-                
-                if (pred === 1) {
-                    imgData.data[idx] = 239;     // R
-                    imgData.data[idx + 1] = 68;  // G
-                    imgData.data[idx + 2] = 68;  // B
-                    imgData.data[idx + 3] = 30;  // A
-                } else {
-                    imgData.data[idx] = 59;      // R
-                    imgData.data[idx + 1] = 130; // G
-                    imgData.data[idx + 2] = 246; // B
-                    imgData.data[idx + 3] = 30;  // A
-                }
+                ctx.fillStyle = pred === 1
+                    ? 'rgba(239,68,68,0.18)'
+                    : 'rgba(59,130,246,0.18)';
+
+                const px = pad + gx * cellW;
+                const py = pad + gy * cellH;
+                ctx.fillRect(px, py, cellW + 0.5, cellH + 0.5); // +0.5 avoids gaps
             }
         }
-        
-        ctx.putImageData(imgData, pad, pad);
     }
 
-    function drawCanvas(ctx, state, canvas, isPerceptron) {
-        const w = canvas.width / window.devicePixelRatio;
-        const h = canvas.height / window.devicePixelRatio;
+    /**
+     * Draw the perceptron decision line: w1·x1 + w2·x2 + bias = 0
+     * → x2 = -(w1·x1 + bias) / w2
+     */
+    function drawPerceptronLine(ctx, w, h, pad) {
+        const { w1, w2, bias } = stateP;
+        if (Math.abs(w2) < 1e-6) {
+            // Vertical line at x1 = -bias/w1
+            if (Math.abs(w1) < 1e-6) return; // degenerate
+            const x1val = -bias / w1;
+            const [sx] = toScreen(x1val, 0, w, h, pad);
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 2.5;
+            ctx.setLineDash([6, 4]);
+            ctx.beginPath();
+            ctx.moveTo(sx, pad);
+            ctx.lineTo(sx, h - pad);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            return;
+        }
+        // x2 at x1=0: (-bias) / w2
+        // x2 at x1=1: -(w1 + bias) / w2
+        const x2at0 = -bias / w2;
+        const x2at1 = -(w1 + bias) / w2;
+        const [sx0, sy0] = toScreen(0, x2at0, w, h, pad);
+        const [sx1, sy1] = toScreen(1, x2at1, w, h, pad);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(pad, pad, w - 2 * pad, h - 2 * pad);
+        ctx.clip();
+
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([6, 4]);
+        ctx.beginPath();
+        ctx.moveTo(sx0, sy0);
+        ctx.lineTo(sx1, sy1);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+    }
+
+    function drawCanvas(ctx, canvas, isPerceptron) {
+        const w = canvas.width / (window.devicePixelRatio || 1);
+        const h = canvas.height / (window.devicePixelRatio || 1);
         const pad = 35;
 
         ctx.clearRect(0, 0, w, h);
 
-        // Draw decision boundary
-        const predictor = isPerceptron 
-            ? (x1, x2) => predictPerceptron(x1, x2, state)
-            : (x1, x2) => predictMLP(x1, x2, state);
-        
-        drawDecisionBoundary(ctx, w, h, pad, predictor);
+        // Background
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(pad, pad, w - 2 * pad, h - 2 * pad);
 
-        // Grid
-        ctx.strokeStyle = '#d1d5db';
-        ctx.lineWidth = 0.5;
+        const predictor = isPerceptron
+            ? (x1, x2) => predictPerceptron(x1, x2)
+            : (x1, x2) => predictMLP(x1, x2);
+
+        // Decision regions
+        drawDecisionRegion(ctx, w, h, pad, predictor);
+
+        // Grid lines
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.lineWidth = 0.8;
         for (let i = 0; i <= 4; i++) {
-            const gx = -0.5 + i * 0.5;
-            const [sx] = toScreen(gx, 0, w, h, pad);
-            ctx.beginPath(); ctx.moveTo(sx, pad); ctx.lineTo(sx, h - pad); ctx.stroke();
-            const [, sy] = toScreen(0, gx, w, h, pad);
-            ctx.beginPath(); ctx.moveTo(pad, sy); ctx.lineTo(w - pad, sy); ctx.stroke();
+            const t = i / 4;
+            const gx = pad + t * (w - 2 * pad);
+            const gy = pad + t * (h - 2 * pad);
+            ctx.beginPath(); ctx.moveTo(gx, pad); ctx.lineTo(gx, h - pad); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(pad, gy); ctx.lineTo(w - pad, gy); ctx.stroke();
         }
 
-        // Axes
-        ctx.strokeStyle = '#9ca3af';
+        // Perceptron decision line
+        if (isPerceptron) {
+            drawPerceptronLine(ctx, w, h, pad);
+        }
+
+        // Axis labels
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '10px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('0', ...toScreen(0, 0, w, h, pad).map((v, i) => i === 0 ? v : v + 14));
+        ctx.fillText('1', pad + (w - 2 * pad), h - pad + 14);
+        ctx.textAlign = 'right';
+        ctx.fillText('1', pad - 6, pad + 4);
+
+        // Axis lines
+        ctx.strokeStyle = '#94a3b8';
         ctx.lineWidth = 1;
-        const [, axOY] = toScreen(0, 0, w, h, pad);
-        ctx.beginPath(); ctx.moveTo(pad, axOY); ctx.lineTo(w - pad, axOY); ctx.stroke();
-        const [axBX] = toScreen(0, 0, w, h, pad);
-        ctx.beginPath(); ctx.moveTo(axBX, pad); ctx.lineTo(axBX, h - pad); ctx.stroke();
+        const [axX0, axY0] = toScreen(0, 0, w, h, pad);
+        ctx.beginPath(); ctx.moveTo(pad, axY0); ctx.lineTo(w - pad, axY0); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(axX0, pad); ctx.lineTo(axX0, h - pad); ctx.stroke();
+
+        // Axis tick labels along bottom and left
+        ctx.fillStyle = '#64748b';
+        ctx.font = '9px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        for (let v = 0; v <= 1; v += 0.5) {
+            const [sx] = toScreen(v, 0, w, h, pad);
+            ctx.fillText(v.toFixed(1), sx, h - pad + 13);
+        }
+        ctx.textAlign = 'right';
+        for (let v = 0; v <= 1; v += 0.5) {
+            const [, sy] = toScreen(0, v, w, h, pad);
+            ctx.fillText(v.toFixed(1), pad - 4, sy + 4);
+        }
 
         // Data points
-        XOR_DATA.forEach((pt) => {
+        XOR_DATA.forEach(pt => {
             const [sx, sy] = toScreen(pt.x1, pt.x2, w, h, pad);
             const predicted = predictor(pt.x1, pt.x2);
             const isCorrect = predicted === pt.label;
 
             ctx.beginPath();
-            ctx.arc(sx, sy, 12, 0, Math.PI * 2);
+            ctx.arc(sx, sy, 13, 0, Math.PI * 2);
             ctx.fillStyle = pt.label === 1 ? '#ef4444' : '#3b82f6';
             ctx.fill();
-            ctx.strokeStyle = isCorrect ? '#fff' : '#fbbf24';
-            ctx.lineWidth = isCorrect ? 3 : 4;
+            ctx.strokeStyle = isCorrect ? '#fff' : '#f59e0b';
+            ctx.lineWidth = isCorrect ? 2.5 : 3.5;
             ctx.stroke();
 
             ctx.fillStyle = '#fff';
@@ -190,26 +259,32 @@
             ctx.fillText(pt.label, sx, sy);
             ctx.textBaseline = 'alphabetic';
         });
+
+        // Border
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(pad, pad, w - 2 * pad, h - 2 * pad);
     }
 
     function drawBoth() {
-        drawCanvas(ctxP, stateP, canvasP, true);
-        drawCanvas(ctxMLP, stateMLP, canvasMLP, false);
+        if (stateP && stateMLP) {
+            drawCanvas(ctxP, canvasP, true);
+            drawCanvas(ctxMLP, canvasMLP, false);
+        }
     }
 
     function calcAccuracy(predictor) {
         let correct = 0;
         XOR_DATA.forEach(pt => {
-            const pred = predictor(pt.x1, pt.x2);
-            if (pred === pt.label) correct++;
+            if (predictor(pt.x1, pt.x2) === pt.label) correct++;
         });
         return (correct / XOR_DATA.length) * 100;
     }
 
-    function trainPerceptron() {
-        const lr = parseFloat(lrSlider.value) * 0.1; // Slower for perceptron
+    function trainPerceptronStep() {
+        const lr = parseFloat(lrSlider.value) * 0.05;
         XOR_DATA.forEach(pt => {
-            const predicted = predictPerceptron(pt.x1, pt.x2, stateP);
+            const predicted = predictPerceptron(pt.x1, pt.x2);
             const error = pt.label - predicted;
             if (error !== 0) {
                 stateP.w1 += lr * error * pt.x1;
@@ -220,93 +295,92 @@
         stateP.epoch++;
     }
 
-    function trainMLP() {
-        const lr = parseFloat(lrSlider.value) * 0.05;
-        
+    function trainMLPStep() {
+        const lr = parseFloat(lrSlider.value) * 0.08;
         XOR_DATA.forEach(pt => {
-            // Forward pass
-            const hidden = [];
+            // Forward
+            const hid = [];
             for (let i = 0; i < stateMLP.hidden; i++) {
-                const h = sigmoid(stateMLP.wh1[i] * pt.x1 + stateMLP.wh2[i] * pt.x2 + stateMLP.bh[i]);
-                hidden.push(h);
+                hid.push(sigmoid(stateMLP.wh1[i] * pt.x1 + stateMLP.wh2[i] * pt.x2 + stateMLP.bh[i]));
             }
             let out = stateMLP.bo;
-            for (let i = 0; i < stateMLP.hidden; i++) {
-                out += stateMLP.wo[i] * hidden[i];
-            }
+            for (let i = 0; i < stateMLP.hidden; i++) out += stateMLP.wo[i] * hid[i];
             const prob = sigmoid(out);
-            
-            // Backward pass (simple gradient descent)
-            const outputError = pt.label - prob;
-            const outputDelta = outputError * prob * (1 - prob);
-            
-            // Update output weights
+
+            // Backward
+            const dOut = (pt.label - prob) * prob * (1 - prob);
             for (let i = 0; i < stateMLP.hidden; i++) {
-                stateMLP.wo[i] += lr * outputDelta * hidden[i];
+                stateMLP.wo[i] += lr * dOut * hid[i];
+                const dHid = dOut * stateMLP.wo[i] * hid[i] * (1 - hid[i]);
+                stateMLP.wh1[i] += lr * dHid * pt.x1;
+                stateMLP.wh2[i] += lr * dHid * pt.x2;
+                stateMLP.bh[i]  += lr * dHid;
             }
-            stateMLP.bo += lr * outputDelta;
-            
-            // Update hidden weights
-            for (let i = 0; i < stateMLP.hidden; i++) {
-                const hiddenError = outputDelta * stateMLP.wo[i];
-                const hiddenDelta = hiddenError * hidden[i] * (1 - hidden[i]);
-                stateMLP.wh1[i] += lr * hiddenDelta * pt.x1;
-                stateMLP.wh2[i] += lr * hiddenDelta * pt.x2;
-                stateMLP.bh[i] += lr * hiddenDelta;
-            }
+            stateMLP.bo += lr * dOut;
         });
-        
         stateMLP.epoch++;
     }
+
+    // Batch size: train N epochs per animation frame to avoid per-frame slowness
+    const EPOCHS_PER_FRAME = 5;
 
     function trainingLoop() {
         if (!training) return;
 
-        if (stateP.epoch < 100) {
-            trainPerceptron();
-            const accP = calcAccuracy((x1, x2) => predictPerceptron(x1, x2, stateP));
-            accPSpan.textContent = accP.toFixed(0) + '%';
+        const pDone = stateP.epoch >= MAX_EPOCHS;
+        const mlpDone = stateMLP.epoch >= MAX_EPOCHS;
+
+        if (!pDone) {
+            for (let i = 0; i < EPOCHS_PER_FRAME; i++) trainPerceptronStep();
+            const accP = calcAccuracy((x1, x2) => predictPerceptron(x1, x2));
             epochPSpan.textContent = stateP.epoch;
-            if (stateP.epoch >= 100) {
-                if (accP < 100) accPSpan.classList.add('failure');
+            accPSpan.textContent = accP.toFixed(0) + '%';
+            if (stateP.epoch >= MAX_EPOCHS) {
+                accPSpan.classList.remove('success', 'failure');
+                accPSpan.classList.add(accP >= 100 ? 'success' : 'failure');
             }
         }
 
-        if (stateMLP.epoch < 100) {
-            trainMLP();
-            const accMLP = calcAccuracy((x1, x2) => predictMLP(x1, x2, stateMLP));
-            accMLPSpan.textContent = accMLP.toFixed(0) + '%';
+        if (!mlpDone) {
+            for (let i = 0; i < EPOCHS_PER_FRAME; i++) trainMLPStep();
+            const accMLP = calcAccuracy((x1, x2) => predictMLP(x1, x2));
             epochMLPSpan.textContent = stateMLP.epoch;
-            if (stateMLP.epoch >= 100) {
-                if (accMLP >= 100) accMLPSpan.classList.add('success');
-                else accMLPSpan.classList.add('failure');
+            accMLPSpan.textContent = accMLP.toFixed(0) + '%';
+            if (stateMLP.epoch >= MAX_EPOCHS) {
+                accMLPSpan.classList.remove('success', 'failure');
+                accMLPSpan.classList.add(accMLP >= 100 ? 'success' : 'failure');
             }
         }
 
         drawBoth();
 
-        // Stop at max epochs
-        if (stateP.epoch >= 100 && stateMLP.epoch >= 100) {
+        if (stateP.epoch >= MAX_EPOCHS && stateMLP.epoch >= MAX_EPOCHS) {
             training = false;
             trainBtn.textContent = '▶ Train Both';
             return;
         }
 
-        animId = setTimeout(trainingLoop, 50);
+        animId = requestAnimationFrame(trainingLoop);
     }
 
     trainBtn.addEventListener('click', () => {
+        if (stateP.epoch >= MAX_EPOCHS && stateMLP.epoch >= MAX_EPOCHS) {
+            // Already finished — reset then train
+            reset();
+            return;
+        }
         training = !training;
         if (training) {
             trainBtn.textContent = '⏸ Pause';
-            trainingLoop();
+            animId = requestAnimationFrame(trainingLoop);
         } else {
             trainBtn.textContent = '▶ Train Both';
-            if (animId) clearTimeout(animId);
+            if (animId) { cancelAnimationFrame(animId); animId = null; }
         }
     });
 
     resetBtn.addEventListener('click', reset);
+
     hiddenSlider.addEventListener('input', () => {
         hiddenVal.textContent = hiddenSlider.value;
     });
@@ -314,18 +388,25 @@
         lrVal.textContent = parseFloat(lrSlider.value).toFixed(2);
     });
 
+    let resizeTimer = null;
     window.addEventListener('resize', () => {
-        resizeCanvases();
-        drawBoth();
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            resizeCanvases();
+            drawBoth();
+        }, 100);
     });
 
-    document.addEventListener('DOMContentLoaded', () => {
+    // Init on load
+    function init() {
+        initStates();
         resizeCanvases();
         drawBoth();
-    });
+    }
 
-    setTimeout(() => {
-        resizeCanvases();
-        drawBoth();
-    }, 100);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        setTimeout(init, 50);
+    }
 })();

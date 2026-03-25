@@ -1,3 +1,3 @@
 ### Aim 
 
-To understand single-layer Perceptron learning and the concept of linear separability by implementing a Perceptron for OR and XOR functions and interactively visualizing decision boundary and classification outputs.
+To understand single-layer perceptron learning and linear separability by implementing perceptrons for OR and XOR functions, and to explore the limitation of single-layer perceptrons and the role of Multi-Layer Perceptrons (MLP) in solving non-linearly separable problems.

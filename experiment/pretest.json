@@ -2,7 +2,7 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "What type of decision boundary does a single-layer perceptron create?",
+      "question": "1. What type of decision boundary does a single-layer perceptron create?",
       "answers": {
         "a": "A circular boundary",
         "b": "A linear hyperplane",
@@ -19,7 +19,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What does it mean for a dataset to be linearly separable?",
+      "question": "2. What does it mean for a dataset to be linearly separable?",
       "answers": {
         "a": "The data can be separated by a straight line or hyperplane",
         "b": "The data points are arranged in a line",
@@ -36,7 +36,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What is the XOR problem in the context of perceptrons?",
+      "question": "3. What is the XOR problem in the context of perceptrons?",
       "answers": {
         "a": "A linearly separable problem that perceptrons can easily solve",
         "b": "A non-linearly separable problem that single-layer perceptrons cannot solve",
@@ -53,7 +53,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "In the perceptron learning rule, when are weights updated?",
+      "question": "4. In the perceptron learning rule, when are weights updated?",
       "answers": {
         "a": "Only when the prediction is correct",
         "b": "After every epoch regardless of errors",
@@ -70,7 +70,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What happens to the weights when the perceptron makes a correct prediction?",
+      "question": "5. What happens to the weights when the perceptron makes a correct prediction?",
       "answers": {
         "a": "They are reset to zero",
         "b": "They remain unchanged",
@@ -87,7 +87,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What role does the learning rate play in perceptron training?",
+      "question": "6. What role does the learning rate play in perceptron training?",
       "answers": {
         "a": "It determines how many epochs to train",
         "b": "It controls the step size of weight updates",
@@ -104,7 +104,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What does the bias term 'b' allow the perceptron to do?",
+      "question": "7. What does the bias term 'b' allow the perceptron to do?",
       "answers": {
         "a": "Increase the number of input features",
         "b": "Move the decision boundary away from the origin",
@@ -121,7 +121,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which logic gate CAN be solved by a single-layer perceptron?",
+      "question": "8. Which logic gate CAN be solved by a single-layer perceptron?",
       "answers": {
         "a": "XOR gate",
         "b": "XNOR gate",
@@ -138,7 +138,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What mathematical equation defines the decision boundary of a perceptron in 2D?",
+      "question": "9. What mathematical equation defines the decision boundary of a perceptron in 2D?",
       "answers": {
         "a": "w1·x1 + w2·x2 + b = 0",
         "b": "w1·x1² + w2·x2² + b = 0",
@@ -155,7 +155,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What fundamental limitation did the XOR problem reveal about single-layer perceptrons?",
+      "question": "10. What fundamental limitation did the XOR problem reveal about single-layer perceptrons?",
       "answers": {
         "a": "They require too much training data",
         "b": "They can only create linear decision boundaries",

@@ -33,23 +33,21 @@ An adjustable constant added to the weighted sum that shifts the decision bounda
 - **Weights** determine the *slope* , how steep the line is and its direction
 - **Bias** determines the *position* , where the line sits in the coordinate space
 
-Together they define a complete line, similar to y = mx + c, where weights act like slope 'm' and bias acts like y-intercept 'c'. The bias term $w_o(t) = θ$ is as seen in Figure 1.
+Together they define a complete line, similar to $y = mx + c$, where weights act like slope $m$ and bias acts like y-intercept $c$. The bias term $w_o(t) = \theta$ is as seen in Figure 1.
 
 **4. Net Input (Weighted Sum)**
 
 The perceptron combines all inputs, weights, and bias into a single numerical value:
 
-**z = w₁·x₁ + w₂·x₂ + ... + wₙ·xₙ + b
+$$z = w_1 \cdot x_1 + w_2 \cdot x_2 + \ldots + w_n \cdot x_n + b$$
 
-This can be thought of as calculating a "score" — multiply each input by its weight, sum them all together, then add the bias. This score determines the predicted class. The summation operation (Σ) is shown in Fig. 1.
+This can be thought of as calculating a "score" — multiply each input by its weight, sum them all together, then add the bias. This score determines the predicted class. The summation operation ($\Sigma$) is shown in Fig. 1.
 
 **5. Activation Function (Step Function)**
 
 The activation function converts the numerical score into a binary decision:
 
-**ŷ = 1 if z ≥ 0**
-
-**ŷ = 0 if z < 0**
+$$\hat{y} = \begin{cases} 1 & \text{if } z \geq 0 \\ 0 & \text{if } z < 0 \end{cases}$$
 
 - If the score z is positive or zero → predict Class 1
 - If the score z is negative → predict Class 0
@@ -60,9 +58,7 @@ The step activation function and output of the perceptron are shown in Fig. 1.
 
 ![Fig. 1. Architecture of a Single-Layer Perceptron](images/perceptron_architecture.png)
 
-**Fig. 1.** Fig. 1: Architecture of a Single-Layer Perceptron showing inputs, weights, summation unit, and step activation function.
-
-(Source: Artificial Neuron (MIT xPro))
+**Fig. 1.** Fig. 1: Architecture of a Single-Layer Perceptron showing inputs, weights,  summation unit, and step activation function.
 
 ---
 
@@ -76,31 +72,31 @@ The perceptron learns through a simple trial-and-error process. It makes predict
 
 The perceptron calculates its weighted sum and makes a prediction:
 
-- z = w₁·x₁ + w₂·x₂ + ... + wₙ·xₙ + b
-- ŷ = 1 if z ≥ 0
-- ŷ = 0 if z < 0
+$$z = w_1 \cdot x_1 + w_2 \cdot x_2 + \ldots + w_n \cdot x_n + b$$
+
+$$\hat{y} = \begin{cases} 1 & \text{if } z \geq 0 \\ 0 & \text{if } z < 0 \end{cases}$$
 
 **Step 2: Check if the Prediction is Correct**
 
-Compare the predicted output (ŷ) with the actual correct label (y):
+Compare the predicted output ($\hat{y}$) with the actual correct label ($y$):
 
-**error = y - ŷ**
+$$\text{error} = y - \hat{y}$$
 
-- If error = 0: The prediction was correct, no changes needed
-- If error = +1: The perceptron predicted 0 but should have predicted 1 (underestimated)
-- If error = -1: The perceptron predicted 1 but should have predicted 0 (overestimated)
+- If $\text{error} = 0$: The prediction was correct, no changes needed
+- If $\text{error} = +1$: The perceptron predicted 0 but should have predicted 1 (underestimated)
+- If $\text{error} = -1$: The perceptron predicted 1 but should have predicted 0 (overestimated)
 
 **Step 3: Update the Weights (Learn from Mistakes)**
 
 When the perceptron makes an error, it adjusts each weight to reduce that error:
 
-**wᵢ = wᵢ + Learning Rate × error × xᵢ**
+$$w_i = w_i + \eta \times \text{error} \times x_i$$
 
 where:
 
-- **Learning Rate** : Learning rate: Controls how big the adjustment steps are
-- **error** : Tells us the direction and magnitude to adjust
-- **xᵢ** : The input value that contributed to this weight
+- $\eta$ (**Learning Rate**): Controls how big the adjustment steps are
+- $\text{error}$: Tells us the direction and magnitude to adjust
+- $x_i$: The input value that contributed to this weight
 
 *Example:* If the perceptron predicted 0 but the answer was 1, the error is +1, so weights connected to active inputs (xᵢ = 1) increase, making the perceptron more likely to predict 1 next time.
 
@@ -108,7 +104,7 @@ where:
 
 The bias is adjusted similarly, but without multiplying by any input:
 
-**b = b + Learning Rate × error**
+$$b = b + \eta \times \text{error}$$
 
 This shifts the decision boundary to better separate the classes.
 

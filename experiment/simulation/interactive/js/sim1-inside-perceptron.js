@@ -130,8 +130,8 @@
         const r = 26;
 
         // ── Input nodes ──
-        drawNode(inputCol, midY - spacing, r, 'x₁', vals.x1.toFixed(1), '#eef2ff', '#4338ca');
-        drawNode(inputCol, midY + spacing, r, 'x₂', vals.x2.toFixed(1), '#eef2ff', '#4338ca');
+        drawNode(inputCol, midY - spacing, r, 'x₁', vals.x1.toString(), '#eef2ff', '#4338ca');
+        drawNode(inputCol, midY + spacing, r, 'x₂', vals.x2.toString(), '#eef2ff', '#4338ca');
 
         // ── Bias node ──
         drawNode(inputCol, midY + spacing * 2.5, r * 0.8, 'b', vals.bias.toFixed(2), '#fef3c7', '#92400e');
@@ -198,8 +198,8 @@
 
     function updateLabels() {
         const vals = getValues();
-        x1Val.textContent = vals.x1.toFixed(1);
-        x2Val.textContent = vals.x2.toFixed(1);
+        x1Val.textContent = vals.x1.toString();
+        x2Val.textContent = vals.x2.toString();
         w1Val.textContent = vals.w1.toFixed(2);
         w2Val.textContent = vals.w2.toFixed(2);
         biasVal.textContent = vals.bias.toFixed(2);

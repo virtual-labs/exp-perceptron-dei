@@ -140,10 +140,10 @@
     {
       "question": "9. What mathematical equation defines the decision boundary of a perceptron in 2D?",
       "answers": {
-        "a": "w1·x1 + w2·x2 + b = 0",
-        "b": "w1·x1² + w2·x2² + b = 0",
-        "c": "x1 + x2 = 1",
-        "d": "sigmoid(w1·x1 + w2·x2 + b) = 0.5"
+        "a": "$w_1 \\cdot x_1 + w_2 \\cdot x_2 + b = 0$",
+        "b": "$w_1 \\cdot x_1^2 + w_2 \\cdot x_2^2 + b = 0$",
+        "c": "$x_1 + x_2 = 1$",
+        "d": "$sigmoid(w_1 \\cdot x_1 + w_2 \\cdot x_2 + b) = 0.5$"
       },
       "explanations": {
         "a": "Correct because this linear equation defines the line separating the two classes.",

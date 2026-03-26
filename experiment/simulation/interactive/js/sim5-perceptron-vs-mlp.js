@@ -66,16 +66,17 @@
     }
 
     function resizeCanvases() {
+        const dpr = window.devicePixelRatio || 1;
         [canvasP, canvasMLP].forEach(canvas => {
-            const rect = canvas.parentElement.getBoundingClientRect();
-            const dpr = window.devicePixelRatio || 1;
+            // Use the canvas's own CSS-resolved size (width:100%; height:100%)
+            // Do NOT set canvas.style.width/height — that overrides CSS and causes
+            // a feedback loop where the container grows on every call.
+            const rect = canvas.getBoundingClientRect();
             canvas.width = Math.round(rect.width * dpr);
             canvas.height = Math.round(rect.height * dpr);
-            canvas.style.width = rect.width + 'px';
-            canvas.style.height = rect.height + 'px';
         });
-        ctxP.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
-        ctxMLP.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+        ctxP.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctxMLP.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
     function sigmoid(x) {

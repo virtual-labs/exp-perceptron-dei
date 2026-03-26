@@ -54,15 +54,16 @@
     }
 
     function resizeCanvases() {
+        const dpr = window.devicePixelRatio || 1;
         [canvasOR, canvasXOR].forEach(canvas => {
-            const rect = canvas.parentElement.getBoundingClientRect();
-            canvas.width = rect.width * window.devicePixelRatio;
-            canvas.height = rect.height * window.devicePixelRatio;
-            canvas.style.width = rect.width + 'px';
-            canvas.style.height = rect.height + 'px';
+            // Use the canvas's own CSS-resolved size (width:100%; height:100%)
+            // Do NOT set canvas.style.width/height — causes a feedback loop
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = Math.round(rect.width * dpr);
+            canvas.height = Math.round(rect.height * dpr);
         });
-        ctxOR.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
-        ctxXOR.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+        ctxOR.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctxXOR.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
     function toScreen(x, y, w, h, pad) {

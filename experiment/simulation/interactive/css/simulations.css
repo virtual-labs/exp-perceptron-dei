@@ -530,6 +530,8 @@ body {
     flex-direction: column;
     gap: 0.5rem;
     min-height: 0;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .comparison-panel h4 {

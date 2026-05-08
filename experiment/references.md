@@ -4,4 +4,8 @@
 
 2. M. Minsky and S. Papert, *Perceptrons: An Introduction to Computational Geometry*, MIT Press, 1969.
 
-3. Perceptron Diagram - Wikimedia Commons ([https://commons.wikimedia.org/wiki/File:Perceptron_moj.png](https://commons.wikimedia.org/wiki/File:Perceptron_moj.png))
+3. T. M. Mitchell, *Machine Learning*, McGraw-Hill, 1997.
+
+4. S. Haykin, *Neural Networks and Learning Machines*, 3rd ed. Pearson, 2009.
+
+5. C. M. Bishop, *Pattern Recognition and Machine Learning*, Springer, 2006.

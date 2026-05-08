@@ -52,14 +52,14 @@ For each epoch:
 2. For each data point:
    - Calculate linear output: $\text{linear\_output} = w_1 \cdot x_1 + w_2 \cdot x_2 + b$
    - Apply step activation: $y_{pred} = 1$ if $\text{linear\_output} \geq 0$ else $0$
-   - i. Count if prediction matches actual label
-   - ii. Calculate error: $\text{error} = y - y_{pred}$
+   - Count if prediction matches actual label
+   - Calculate error: $\text{error} = y - y_{pred}$
    - Update weights: $w_1 = w_1 + \eta \times \text{error} \times x_1$
    - Update weights: $w_2 = w_2 + \eta \times \text{error} \times x_2$
    - Update bias: $b = b + \eta \times \text{error}$
-   - Calculate accuracy: $\text{accuracy} = \dfrac{\text{correct}}{\text{total}} \times 100$
-3. Print epoch results showing accuracy and updated parameters
-4. Visualise decision boundary after each epoch
+3. Calculate accuracy: $\text{accuracy} = \dfrac{\text{correct}}{\text{total}} \times 100$
+4. Print epoch results showing accuracy and updated parameters
+5. Visualise decision boundary after each epoch
 
 Return final trained weights and bias.
 

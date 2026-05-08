@@ -5,83 +5,83 @@
       "question": "1. When does a perceptron update its weights during training?",
       "answers": {
         "a": "After every epoch, regardless of accuracy",
-        "b": "Only when it makes an incorrect prediction",
-        "c": "Before making any predictions",
+        "b": "Before making any predictions",
+        "c": "Only when it makes an incorrect prediction",
         "d": "Only in the first epoch"
       },
       "explanations": {
         "a": "Incorrect because weight updates happen during the epoch, not after it.",
-        "b": "Correct because weights change only when error ≠ 0, which occurs during misclassification.",
-        "c": "Incorrect because predictions must be made first to calculate errors.",
+        "b": "Incorrect because predictions must be made first to calculate errors.",
+        "c": "Correct because weights change only when error ≠ 0, which occurs during misclassification.",
         "d": "Incorrect because updates continue throughout all epochs when errors occur."
       },
-      "correctAnswer": "b",
+      "correctAnswer": "c",
       "difficulty": "beginner"
     },
     {
       "question": "2. What is the first step a perceptron takes when making a prediction?",
       "answers": {
-        "a": "Apply the activation function",
-        "b": "Calculate the weighted sum of inputs plus bias",
+        "a": "Calculate the weighted sum of inputs plus bias",
+        "b": "Apply the activation function",
         "c": "Update the weights",
         "d": "Generate random outputs"
       },
       "explanations": {
-        "a": "Incorrect because the weighted sum must be calculated first.",
-        "b": "Correct because z = w₁·x₁ + w₂·x₂ + b is computed before applying the step function.",
+        "a": "Correct because z = w₁·x₁ + w₂·x₂ + b is computed before applying the step function.",
+        "b": "Incorrect because the weighted sum must be calculated first.",
         "c": "Incorrect because weights are updated after prediction and error calculation.",
         "d": "Incorrect because perceptrons make deterministic predictions based on learned parameters."
       },
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "difficulty": "beginner"
     },
     {
       "question": "3. What output does the perceptron's step function produce when z = 0?",
       "answers": {
         "a": "0.5",
-        "b": "1",
-        "c": "-1",
-        "d": "Undefined"
+        "b": "-1",
+        "c": "Undefined",
+        "d": "1"
       },
       "explanations": {
         "a": "Incorrect because the step function produces binary outputs, not probabilities.",
-        "b": "Correct because the standard convention is: output = 1 if z ≥ 0.",
-        "c": "Incorrect because perceptrons output 0 or 1, not negative values.",
-        "d": "Incorrect because z = 0 is a defined case where the output is 1."
+        "b": "Incorrect because perceptrons output 0 or 1, not negative values.",
+        "c": "Incorrect because z = 0 is a defined case where the output is 1.",
+        "d": "Correct because the standard convention is: output = 1 if z ≥ 0."
       },
-      "correctAnswer": "b",
+      "correctAnswer": "d",
       "difficulty": "beginner"
     },
     {
       "question": "4. If you observe the decision boundary after each epoch, what would you notice?",
       "answers": {
-        "a": "It stays in the same position throughout training",
-        "b": "It rotates and shifts position trying to separate the classes",
+        "a": "It rotates and shifts position trying to separate the classes",
+        "b": "It stays in the same position throughout training",
         "c": "It splits into multiple lines",
         "d": "It becomes a curve"
       },
       "explanations": {
-        "a": "Incorrect because weight updates cause the boundary to move.",
-        "b": "Correct because changing weights alter the slope and position of the linear boundary.",
+        "a": "Correct because changing weights alter the slope and position of the linear boundary.",
+        "b": "Incorrect because weight updates cause the boundary to move.",
         "c": "Incorrect because a single perceptron creates only one decision boundary.",
         "d": "Incorrect because perceptron boundaries are always linear."
       },
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "difficulty": "beginner"
     },
     {
-      "question": "5. Which two XOR points are typically on opposite sides of the final decision boundary?",
+      "question": "5. Which pairs of XOR points share the same class label?",
       "answers": {
         "a": "(0,0) and (0,1)",
         "b": "(1,0) and (1,1)",
         "c": "(0,0) and (1,1), or (0,1) and (1,0)",
-        "d": "All four points are on the same side"
+        "d": "All four points share the same label"
       },
       "explanations": {
-        "a": "Incorrect because these are adjacent points, not diagonally opposite.",
-        "b": "Incorrect because these are also adjacent points.",
-        "c": "Correct because the linear boundary separates diagonally opposite points, though not correctly for XOR.",
-        "d": "Incorrect because the boundary separates the space into two regions."
+        "a": "Incorrect because these points have different outputs (0 and 1).",
+        "b": "Incorrect because these points have different outputs (1 and 0).",
+        "c": "Correct because (0,0) and (1,1) both output 0, while (0,1) and (1,0) both output 1.",
+        "d": "Incorrect because XOR has two distinct classes."
       },
       "correctAnswer": "c",
       "difficulty": "beginner"
@@ -107,17 +107,17 @@
       "question": "7. When does the perceptron learning algorithm update the bias term?",
       "answers": {
         "a": "Only at the end of each epoch",
-        "b": "When there is a prediction error, using: b = b + learning_rate × error",
-        "c": "The bias never changes during training",
-        "d": "Only when accuracy drops below 50%"
+        "b": "The bias never changes during training",
+        "c": "Only when accuracy drops below 50%",
+        "d": "When there is a prediction error, using: b = b + learning_rate × error"
       },
       "explanations": {
         "a": "Incorrect because bias updates happen for each misclassified point.",
-        "b": "Correct because bias is updated the same way as weights, but without multiplying by input.",
-        "c": "Incorrect because bias is a learnable parameter that gets updated.",
-        "d": "Incorrect because updates depend on individual prediction errors, not overall accuracy."
+        "b": "Incorrect because bias is a learnable parameter that gets updated.",
+        "c": "Incorrect because updates depend on individual prediction errors, not overall accuracy.",
+        "d": "Correct because bias is updated the same way as weights, but without multiplying by input."
       },
-      "correctAnswer": "b",
+      "correctAnswer": "d",
       "difficulty": "beginner"
     },
     {
@@ -140,18 +140,18 @@
     {
       "question": "9. Which components of a perceptron are adjusted during the training process?",
       "answers": {
-        "a": "Only the weights",
-        "b": "Both weights and bias",
+        "a": "Both weights and bias",
+        "b": "Only the weights",
         "c": "Only the input values",
         "d": "Only the activation function"
       },
       "explanations": {
-        "a": "Incorrect because bias is also updated during training.",
-        "b": "Correct because the learning algorithm updates both w and b based on errors.",
+        "a": "Correct because the learning algorithm updates both w and b based on errors.",
+        "b": "Incorrect because bias is also updated during training.",
         "c": "Incorrect because inputs are fixed data; they are not learned parameters.",
         "d": "Incorrect because the activation function remains constant during training."
       },
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "difficulty": "beginner"
     },
     {

@@ -4,7 +4,7 @@
 
 The perceptron is the simplest form of artificial neural network, invented by Frank Rosenblatt in 1958. It is a binary classifier that learns to separate data points into two classes using a linear decision boundary. A perceptron computes a weighted sum of its inputs, adds a bias term, and applies a step activation function to produce a binary output. The basic structure and working of a single-layer perceptron are illustrated in Fig. 1.
 
-> *"The perceptron is a type of linear classifier, i.e., a classification algorithm that makes its predictions based on a linear predictor function combining a set of weights with the feature vector."* — Rosenblatt, 1958
+> *"The perceptron is a type of linear classifier, i.e., a classification algorithm that makes its predictions based on a linear predictor function combining a set of weights with the feature vector."*
 
 A single-layer perceptron consists of the following components:
 
@@ -12,7 +12,7 @@ A single-layer perceptron consists of the following components:
 
 The features or data values that the perceptron receives to make decisions. These are like the raw information fed into the model. These input nodes and their connections to the perceptron are shown in Fig. 1.
 
-*Example:* For the XOR problem, we have two binary inputs x₁ and x₂, each can be either 0 or 1.
+*Example:* For the XOR problem, we have two binary inputs x₁ and x₂, each of which can be either 0 or 1.
 
 **2. Weights (w₁, w₂, ..., wₙ)**
 
@@ -25,15 +25,15 @@ These are importance scores that determine how much each input contributes to th
 
 An adjustable constant added to the weighted sum that shifts the decision boundary's position.
 
-- Bias allows the line to move freely in space to better separate the classes
+- Bias shifts the position of the decision boundary, as bias can move the decision boundary only along one direction: normal to the weight vector.
 - Bias controls the position or shift of the decision boundary line
 
 **Key Difference Between Weights and Bias:**
 
-- **Weights** determine the *slope* , how steep the line is and its direction
-- **Bias** determines the *position* , where the line sits in the coordinate space
+- **Weights** determine the *slope*, how steep the line is and its direction
+- **Bias** determines the *position*, where the line sits in the coordinate space
 
-Together they define a complete line, similar to $y = mx + c$, where weights act like slope $m$ and bias acts like y-intercept $c$. The bias term $w_o(t) = \theta$ is as seen in Fig. 1.
+Together they define a complete line, similar to $y = mx + c$, where weights act like the slope $m$ and bias acts like the y-intercept $c$. The bias term $w_o(t)$ (representing the weight of the bias connection) is denoted as $\theta$ as seen in Fig. 1.
 
 **4. Net Input (Weighted Sum)**
 
@@ -49,8 +49,8 @@ The activation function converts the numerical score into a binary decision:
 
 $$\hat{y} = \begin{cases} 1 & \text{if } z \geq 0 \\ 0 & \text{if } z < 0 \end{cases}$$
 
-- If the score z is positive or zero → predict Class 1
-- If the score z is negative → predict Class 0
+- If the score $z$ is positive or zero → predict Class 1
+- If the score $z$ is negative → predict Class 0
 - This creates a threshold at z = 0 where the perceptron switches between classes
 - The resulting decision boundary is always a straight line (linear), which is why perceptrons can only solve linearly separable problems
 
@@ -58,13 +58,13 @@ The step activation function and output of the perceptron are shown in Fig. 1.
 
 ![Fig. 1. Architecture of a Single-Layer Perceptron](images/perceptron_architecture.png)
 
-**Fig. 1.**  Architecture of a Single-Layer Perceptron showing inputs, weights, summation unit, and step activation function.
+**Fig. 1.** Architecture of a Single-Layer Perceptron showing inputs, weights, summation unit, and step activation function. *(Image adapted from Wikimedia Commons)*
 
 ---
 
 #### Perceptron Learning Algorithm
 
-The perceptron learns through a simple trial-and-error process. It makes predictions, checks if they're correct, and adjusts its parameters when it makes mistakes. This is called supervised learning because we provide the correct answers during training.
+The perceptron learns through a simple trial-and-error process. It makes predictions, checks if they are correct, and adjusts its parameters when it makes mistakes. This is called supervised learning because we provide the correct answers during training.
 
 **The Learning Process:**
 
@@ -140,7 +140,8 @@ A dataset is **linearly separable** if there exists a straight line (in 2D), pla
 - **AND gate:** (0,0) → 0, (0,1) → 0, (1,0) → 0, (1,1) → 1
 - **OR gate:** (0,0) → 0, (0,1) → 1, (1,0) → 1, (1,1) → 1
 
-**Examples of non-linearly separable problems:** XOR gate: 
+**Examples of non-linearly separable problems:**
+- **XOR gate:** (0,0) → 0, (0,1) → 1, (1,0) → 1, (1,1) → 0
 
 ---
 
@@ -162,7 +163,7 @@ When plotted in 2D space, the XOR problem shows a diagonal pattern where:
 
 No matter how we adjust w₁, w₂, and b, we cannot draw a single straight line that separates these classes. The perceptron will keep updating its weights indefinitely, oscillating between different incorrect solutions, never achieving 100% accuracy.
 
-The solution came with the development of multi-layer perceptrons (MLPs) with hidden layers and non-linear activation functions. A two-layer neural network with at least 2 hidden neurons can solve XOR by creating multiple decision boundaries that, when combined, separate the classes correctly.
+The solution came with the development of multi-layer perceptrons (MLPs) with hidden layers and non-linear activation functions. A two-layer neural network (consisting of one hidden layer and one output layer) with at least 2 hidden neurons can solve XOR by creating multiple decision boundaries that, when combined, separate the classes correctly.
 
 ---
 
@@ -178,7 +179,7 @@ The solution came with the development of multi-layer perceptrons (MLPs) with hi
   Forms the basis for understanding more complex neural networks and deep learning architectures.
 
 - **Interpretability:**
-  Decision boundary can be easily visualized and understood, providing insights into how the model makes decisions.
+  The decision boundary can be easily visualized and understood, providing insights into how the model makes decisions.
 
 ---
 

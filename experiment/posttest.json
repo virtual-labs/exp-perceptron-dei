@@ -5,17 +5,17 @@
       "question": "1. When does a perceptron update its weights during training?",
       "answers": {
         "a": "After every epoch, regardless of accuracy",
-        "b": "Before making any predictions",
-        "c": "Only when it makes an incorrect prediction",
+        "b": "Only when it makes an incorrect prediction",
+        "c": "Before making any predictions",
         "d": "Only in the first epoch"
       },
       "explanations": {
         "a": "Incorrect because weight updates happen during the epoch, not after it.",
-        "b": "Incorrect because predictions must be made first to calculate errors.",
-        "c": "Correct because weights change only when error ≠ 0, which occurs during misclassification.",
+        "b": "Correct because weights change only when error ≠ 0, which occurs during misclassification.",
+        "c": "Incorrect because predictions must be made first to calculate errors.",
         "d": "Incorrect because updates continue throughout all epochs when errors occur."
       },
-      "correctAnswer": "c",
+      "correctAnswer": "b",
       "difficulty": "beginner"
     },
     {
@@ -45,7 +45,7 @@
       },
       "explanations": {
         "a": "Incorrect because the step function produces binary outputs, not probabilities.",
-        "b": "Incorrect because perceptrons output 0 or 1, not negative values.",
+        "b": "Incorrect because a perceptron outputs 0 or 1, not negative values.",
         "c": "Incorrect because z = 0 is a defined case where the output is 1.",
         "d": "Correct because the standard convention is: output = 1 if z ≥ 0."
       },
@@ -70,7 +70,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "5. Which pairs of XOR points share the same class label?",
+      "question": "5. Which pairs of XOR input points belong to the same class label?",
       "answers": {
         "a": "(0,0) and (0,1)",
         "b": "(1,0) and (1,1)",
@@ -78,10 +78,10 @@
         "d": "All four points share the same label"
       },
       "explanations": {
-        "a": "Incorrect because these points have different outputs (0 and 1).",
-        "b": "Incorrect because these points have different outputs (1 and 0).",
-        "c": "Correct because (0,0) and (1,1) both output 0, while (0,1) and (1,0) both output 1.",
-        "d": "Incorrect because XOR has two distinct classes."
+        "a": "Incorrect because these points belong to different output classes in the XOR truth table.",
+        "b": "Incorrect because these points also belong to different output classes.",
+        "c": "Correct because in the XOR function, (0,0) and (1,1) both belong to Class 0, while (0,1) and (1,0) both belong to Class 1.",
+        "d": "Incorrect because XOR contains two points in Class 0 and two points in Class 1."
       },
       "correctAnswer": "c",
       "difficulty": "beginner"
@@ -89,18 +89,18 @@
     {
       "question": "6. What does the error value represent in the perceptron learning rule?",
       "answers": {
-        "a": "The learning rate",
-        "b": "The difference between actual and predicted labels",
+        "a": "The difference between actual and predicted labels",
+        "b": "The learning rate",
         "c": "The total number of training epochs",
         "d": "The weight value"
       },
       "explanations": {
-        "a": "Incorrect because learning rate is a separate hyperparameter.",
-        "b": "Correct because error = y_actual - y_predicted.",
+        "a": "Correct because error = y_actual - y_predicted.",
+        "b": "Incorrect because learning rate is a separate hyperparameter.",
         "c": "Incorrect because error is calculated per prediction, not related to epoch count.",
         "d": "Incorrect because error is used to update weights, not the weight itself."
       },
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "difficulty": "beginner"
     },
     {

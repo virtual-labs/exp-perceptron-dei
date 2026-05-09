@@ -1,31 +1,34 @@
 ### Theory
 
-#### Introduction to Perceptrons
+#### Introduction to Perceptron
 
 The perceptron is the simplest form of artificial neural network, invented by Frank Rosenblatt in 1958. It is a binary classifier that learns to separate data points into two classes using a linear decision boundary. A perceptron computes a weighted sum of its inputs, adds a bias term, and applies a step activation function to produce a binary output. The basic structure and working of a single-layer perceptron are illustrated in Fig. 1.
 
-> *"The perceptron is a type of linear classifier, i.e., a classification algorithm that makes its predictions based on a linear predictor function combining a set of weights with the feature vector."*
+> *"A perceptron is a linear classifier that makes predictions using a weighted combination of input features followed by an activation function."*
 
-A single-layer perceptron consists of the following components:
+A single-layer perceptron consists of:
 
 **1. Inputs (x₁, x₂, ..., xₙ)**
 
-The features or data values that the perceptron receives to make decisions. These are like the raw information fed into the model. These input nodes and their connections to the perceptron are shown in Fig. 1.
+The features or data values that the perceptron receives to make decisions. These are like the raw
+information fed into the model. These input nodes and their connections to the perceptron are shown in Fig.
+1.
 
 *Example:* For the XOR problem, we have two binary inputs x₁ and x₂, each of which can be either 0 or 1.
 
 **2. Weights (w₁, w₂, ..., wₙ)**
 
-These are importance scores that determine how much each input contributes to the final prediction. A larger weight (positive or negative) means that input has greater influence. The weighted connections between inputs and the summation unit are shown in Fig. 1.
+These are Importance scores that determine how much each input contributes to the final prediction. A larger weight (positive or negative) means that the input has a greater influence. The weighted connections between the inputs and the summation unit are shown in Fig. 1.
 
 - Each input gets its own weight, acting as a multiplier for that feature
 - Weights control the angle or tilt of the decision boundary line
 
 **3. Bias (b)**
 
-An adjustable constant added to the weighted sum that shifts the decision boundary's position.
+An adjustable constant added to the weighted sum that shifts the position of the decision boundary.
 
-- Bias shifts the position of the decision boundary, as bias can move the decision boundary only along one direction: normal to the weight vector.
+- Bias shifts the position of the decision boundary without changing its orientation, allowing the
+perceptron to better separate the classes.
 - Bias controls the position or shift of the decision boundary line
 
 **Key Difference Between Weights and Bias:**
@@ -52,13 +55,13 @@ $$\hat{y} = \begin{cases} 1 & \text{if } z \geq 0 \\ 0 & \text{if } z < 0 \end{c
 - If the score $z$ is positive or zero → predict Class 1
 - If the score $z$ is negative → predict Class 0
 - This creates a threshold at z = 0 where the perceptron switches between classes
-- The resulting decision boundary is always a straight line (linear), which is why perceptrons can only solve linearly separable problems
+- The resulting decision boundary is always a straight line (linear), which is why perceptron can only solve linearly separable problems
 
 The step activation function and output of the perceptron are shown in Fig. 1.
 
 ![Fig. 1. Architecture of a Single-Layer Perceptron](images/perceptron_architecture.png)
 
-**Fig. 1.** Architecture of a Single-Layer Perceptron showing inputs, weights, summation unit, and step activation function. *(Image adapted from Wikimedia Commons)*
+**Fig. 1:** Architecture of a Single-Layer Perceptron showing inputs, weights, summation unit, and step activation function.
 
 ---
 
@@ -125,7 +128,7 @@ The process repeats for several epochs. With each epoch:
 Training stops when either:
 
 - **Convergence:** All training examples are classified correctly (only possible for linearly separable data)
-- **Maximum epochs reached:** We've trained for a fixed number of epochs
+- **Maximum epochs reached:** We have trained for a fixed number of epochs
 
 **Important Note:** For linearly separable problems like AND or OR gates, the perceptron will eventually find a perfect solution. However, for non-linearly separable problems like XOR, the perceptron will never converge and will continue making errors indefinitely, which is exactly what we observe in this experiment.
 
@@ -133,7 +136,7 @@ Training stops when either:
 
 #### Linear Separability
 
-A dataset is **linearly separable** if there exists a straight line (in 2D), plane (in 3D), or hyperplane (in higher dimensions) that can perfectly separate the two classes. Single-layer perceptrons can only learn linearly separable patterns.
+A dataset is **linearly separable** if there exists a straight line (in 2D), plane (in 3D), or hyperplane (in higher dimensions) that can perfectly separate the two classes. A single-layer perceptron can only learn linearly separable patterns.
 
 **Examples of linearly separable problems:**
 
@@ -158,41 +161,41 @@ XOR (Exclusive OR) is a Boolean logic function that outputs 1 when the inputs ar
 
 When plotted in 2D space, the XOR problem shows a diagonal pattern where:
 
-- Points (0,0) and (1,1) belong to Class 0 (Blue)
-- Points (0,1) and (1,0) belong to Class 1 (Red)
+- Points (0,0) and (1,1) belong to Class 0 (blue)
+- Points (0,1) and (1,0) belong to Class 1 (red)
 
-No matter how we adjust w₁, w₂, and b, we cannot draw a single straight line that separates these classes. The perceptron will keep updating its weights indefinitely, oscillating between different incorrect solutions, never achieving 100% accuracy.
+No matter how we adjust w₁, w₂, and b, we cannot draw a single straight line that achieves this separation. The perceptron will keep updating its weights indefinitely, oscillating between different incorrect solutions, never achieving 100% accuracy.
 
-The solution came with the development of multi-layer perceptrons (MLPs) with hidden layers and non-linear activation functions. A two-layer neural network (consisting of one hidden layer and one output layer) with at least 2 hidden neurons can solve XOR by creating multiple decision boundaries that, when combined, separate the classes correctly.
+The solution came with the development of Multi-Layer Perceptrons (MLPs) with hidden layers and non-linear activation functions. A two-layer neural network, consisting of one hidden layer containing at least two neurons and one output layer, can solve the XOR problem. The hidden layer creates multiple linear decision boundaries, and their combination enables the network to learn non-linearly separable patterns correctly.
 
 ---
 
-#### Merits of Perceptrons
+#### Merits of Perceptron
 
 - **Simplicity:**
-  Easy to understand and implement, making it an excellent starting point for learning neural networks.
+  Easy to understand and implement.
 
 - **Computational Efficiency:**
-  Fast training and prediction for linearly separable problems due to simple mathematical operations.
+  Fast training and prediction for linearly separable problems.
 
 - **Foundation:**
-  Forms the basis for understanding more complex neural networks and deep learning architectures.
+  Forms the basis for understanding more complex neural networks.
 
 - **Interpretability:**
-  The decision boundary can be easily visualized and understood, providing insights into how the model makes decisions.
+  The decision boundary can be easily visualised and understood.
 
 ---
 
-#### Demerits of Perceptrons
+#### Demerits of Perceptron
 
 - **Linear Limitation:**
-  Cannot solve non-linearly separable problems like XOR, severely limiting its practical applications.
+  Cannot solve non-linearly separable problems like XOR.
 
 - **Binary Classification Only:**
-  Limited to two-class problems in its basic form, requiring extensions for multi-class classification.
+  Limited to two-class problems in basic form.
 
 - **Sensitive to Feature Scaling:**
-  Performance can be affected by input feature scales, often requiring normalization of input data.
+  Performance can be affected by input feature scales.
 
 - **No Convergence for Non-separable Data:**
-  May oscillate indefinitely without reaching a solution when data is not linearly separable.
+  May oscillate indefinitely without reaching a solution.

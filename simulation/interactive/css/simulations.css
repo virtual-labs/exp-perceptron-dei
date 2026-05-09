@@ -1,0 +1,649 @@
+/* ===================================
+   Perceptron Interactive Playground — CSS
+   =================================== */
+
+:root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --border: #e5e7eb;
+    --text: #1a1a2e;
+    --text-muted: #6b7280;
+    --accent: #6366f1;
+    --accent-light: #818cf8;
+    --accent-bg: #eef2ff;
+    --danger: #ef4444;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --perceptron-color: #8b5cf6;
+    --boundary-color: #3b82f6;
+    --input-color: #10b981;
+    --radius: 8px;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'Fira Code', 'Consolas', monospace;
+    --nav-h: 48px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+/* ─── Tab Navigation ─── */
+.tab-navigation {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    height: var(--nav-h);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.tab-navigation .logo {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-right: 1.5rem;
+    white-space: nowrap;
+}
+
+.tab-navigation .logo span {
+    color: var(--accent);
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 0 1rem;
+    height: var(--nav-h);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    white-space: nowrap;
+    font-family: var(--font);
+}
+
+.tab-btn:hover {
+    color: var(--text);
+}
+
+.tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+/* ─── Back Button ─── */
+.btn-back {
+    margin-left: auto;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-bg);
+    border: 1px solid var(--accent);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    height: auto;
+    font-family: var(--font);
+}
+
+.btn-back:hover {
+    background: var(--accent);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+/* ─── Main Content ─── */
+.main-content {
+    height: calc(100vh - var(--nav-h));
+    overflow: hidden;
+}
+
+.tab-content {
+    display: none;
+    padding: 0.75rem 1rem;
+    height: 100%;
+    overflow: hidden;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ─── Glass Panel ─── */
+.glass-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+/* ─── Simulation Layout ─── */
+.sim-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 0.75rem;
+    height: 100%;
+    overflow: hidden;
+}
+
+.sim-sidebar {
+    padding: 1rem;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.sim-sidebar h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.sim-sidebar h3 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin: 0.6rem 0 0.3rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.sim-sidebar p {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+.sim-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* ─── Control Groups ─── */
+.control-group {
+    margin-bottom: 0.5rem;
+}
+
+.control-group label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 0.15rem;
+}
+
+.control-group input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+    height: 4px;
+}
+
+.control-group select {
+    width: 100%;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-family: var(--font);
+    background: var(--surface);
+    color: var(--text);
+}
+
+.control-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.25rem;
+}
+
+.control-row .value {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--accent);
+    min-width: 2.5rem;
+    text-align: right;
+    font-family: var(--mono);
+}
+
+/* ─── Buttons ─── */
+.btn {
+    padding: 0.35rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: var(--font);
+    transition: all 0.15s;
+    background: var(--surface);
+    color: var(--text);
+}
+
+.btn:hover {
+    border-color: var(--text);
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+.btn-primary:hover {
+    background: var(--accent-light);
+    border-color: var(--accent-light);
+}
+
+.btn-danger {
+    background: #fff;
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+.btn-danger:hover {
+    background: #fef2f2;
+}
+
+.btn-group {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+/* ─── Canvas Container ─── */
+.canvas-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    flex: 1;
+    min-height: 0;
+}
+
+.canvas-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* ─── Observe box ─── */
+.observe-box {
+    padding: 0.6rem 0.75rem;
+}
+
+.observe-box ul {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    padding-left: 1rem;
+    line-height: 1.6;
+}
+
+/* ─── Status Bar ─── */
+.status-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    flex: 0 0 auto;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #d1d5db;
+}
+
+.status-dot.running {
+    background: var(--success);
+    animation: pulse 1s infinite;
+}
+
+.status-dot.paused {
+    background: var(--warning);
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+/* ─── Sim1: Inside Perceptron ─── */
+.sim1-perceptron-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 0;
+}
+
+.perceptron-diagram {
+    flex: 1;
+    min-height: 0;
+}
+
+.perceptron-diagram canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.computation-display {
+    padding: 0.75rem 1rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.computation-display .comp-item {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+}
+
+.computation-display .comp-label {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 0.1rem;
+    font-family: var(--font);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.computation-display .comp-value {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.comp-value.positive {
+    color: var(--accent);
+}
+
+.comp-value.negative {
+    color: var(--danger);
+}
+
+/* ─── Sim2: Decision Boundary ─── */
+.sim2-boundary-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 0;
+}
+
+.boundary-canvas-wrap {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+}
+
+.boundary-canvas-wrap canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* ─── Sim3: Training Animation ─── */
+.sim3-training-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 0;
+}
+
+.training-canvas-wrap {
+    flex: 1;
+    min-height: 0;
+}
+
+.training-canvas-wrap canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.training-log-panel {
+    padding: 0.75rem;
+    max-height: 140px;
+    overflow-y: auto;
+}
+
+.training-log-panel h4 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.training-log {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+/* ─── Sim4: Convergence ─── */
+.sim4-convergence-wrapper {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    min-height: 0;
+}
+
+.convergence-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.convergence-panel h4 {
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem 0;
+}
+
+.convergence-canvas-wrap {
+    flex: 1;
+    min-height: 0;
+    padding: 0 0.5rem;
+}
+
+.convergence-canvas-wrap canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.convergence-stats {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.72rem;
+    font-family: var(--mono);
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 1rem;
+}
+
+.convergence-stats .stat-value {
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* ─── Sim5: Perceptron vs MLP ─── */
+.sim5-comparison-wrapper {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    min-height: 0;
+}
+
+.comparison-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.comparison-panel h4 {
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem 0;
+}
+
+.comparison-canvas-wrap {
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+    padding: 0 0.5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.comparison-canvas-wrap canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.comparison-stats {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.72rem;
+    font-family: var(--mono);
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 1rem;
+}
+
+.comparison-stats .stat-value {
+    font-weight: 600;
+    color: var(--text);
+}
+
+.stat-value.success {
+    color: var(--success);
+}
+
+.stat-value.failure {
+    color: var(--danger);
+}
+
+/* ─── Learning Outcome Banner ─── */
+.learning-outcome {
+    padding: 0.6rem 0.75rem;
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    border-radius: var(--radius);
+    flex: 0 0 auto;
+}
+
+.learning-outcome h4 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.2rem;
+}
+
+.learning-outcome p {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1200px) {
+
+    .sim4-convergence-wrapper,
+    .sim5-comparison-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+    .sim-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+        overflow: auto;
+    }
+
+    .sim-sidebar {
+        height: auto;
+    }
+
+    .main-content {
+        height: auto;
+        overflow: auto;
+    }
+
+    .tab-content {
+        height: auto;
+        overflow: auto;
+    }
+
+    .tab-navigation {
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .tab-content {
+        padding: 0.5rem;
+    }
+
+    .tab-btn {
+        font-size: 0.72rem;
+        padding: 0 0.5rem;
+    }
+}

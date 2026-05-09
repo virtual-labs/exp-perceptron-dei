@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Perceptron Educational Lab</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--bg-color: #ffffff;
+			--text-primary: #111111;
+			--text-secondary: #666666;
+			--border-color: #eaeaea;
+			--hover-border: #000000;
+			--card-bg: #ffffff;
+			--accent: #333333;
+		}
+
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Inter', -apple-system, sans-serif;
+			background-color: var(--bg-color);
+			color: var(--text-primary);
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			padding: 2rem;
+			line-height: 1.5;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		.container {
+			max-width: 800px;
+			width: 100%;
+		}
+
+		.header {
+			text-align: left;
+			margin-bottom: 4rem;
+			padding-bottom: 2rem;
+			border-bottom: 1px solid var(--border-color);
+		}
+
+		.header h1 {
+			font-size: 2rem;
+			font-weight: 600;
+			margin-bottom: 0.5rem;
+			letter-spacing: -0.03em;
+		}
+
+		.header p {
+			font-size: 1rem;
+			color: var(--text-secondary);
+			font-weight: 400;
+		}
+
+		.options {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+			gap: 1.5rem;
+		}
+
+		.option-card {
+			background: var(--card-bg);
+			border: 1px solid var(--border-color);
+			border-radius: 6px;
+			padding: 2rem;
+			text-decoration: none;
+			color: inherit;
+			transition: all 0.2s ease;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.option-card:hover {
+			border-color: var(--hover-border);
+			transform: translateY(-1px);
+		}
+
+		.option-label {
+			font-size: 0.75rem;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			color: var(--text-secondary);
+			margin-bottom: 1rem;
+			font-weight: 500;
+			border: 1px solid var(--border-color);
+			padding: 0.25rem 0.5rem;
+			border-radius: 4px;
+		}
+
+		.option-title {
+			font-size: 1.25rem;
+			font-weight: 500;
+			margin-bottom: 0.75rem;
+			color: var(--text-primary);
+			letter-spacing: -0.02em;
+		}
+
+		.option-description {
+			font-size: 0.95rem;
+			color: var(--text-secondary);
+			line-height: 1.6;
+			margin-bottom: 1.25rem;
+		}
+
+		.option-cta {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.4rem;
+			padding: 0.5rem 1.2rem;
+			font-size: 0.85rem;
+			font-weight: 600;
+			color: #fff;
+			background: #111;
+			border: none;
+			border-radius: 6px;
+			cursor: pointer;
+			transition: all 0.2s;
+			font-family: 'Inter', -apple-system, sans-serif;
+			margin-top: auto;
+		}
+
+		.option-card:hover .option-cta {
+			background: #333;
+			transform: translateX(2px);
+		}
+
+		.footer {
+			text-align: center;
+			color: #999;
+			margin-top: 5rem;
+			font-size: 0.8rem;
+		}
+
+		@media (max-width: 600px) {
+			.header {
+				text-align: center;
+			}
+
+			.header h1 {
+				font-size: 1.75rem;
+			}
+
+			.option-card {
+				align-items: center;
+				text-align: center;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="header">
+			<h1>Perceptron Educational Lab</h1>
+			<p>Interactive learning environment for the Perceptron model</p>
+		</div>
+
+		<div class="options">
+			<a href="notebook/index.html" class="option-card">
+				<div class="option-label">Tutorial</div>
+				<div class="option-title">Notebook View</div>
+				<div class="option-description">
+					A step-by-step guide with code cells demonstrating perceptron training on OR and XOR gates with
+					decision boundary visualization.
+				</div>
+				<span class="option-cta">Open Tutorial →</span>
+			</a>
+
+			<a href="interactive/index.html" class="option-card">
+				<div class="option-label">Simulation</div>
+				<div class="option-title">Interactive Playground</div>
+				<div class="option-description">
+					Visual experiments with perceptron internals, decision boundaries, training animations, and
+					comparisons with MLP.
+				</div>
+				<span class="option-cta">Open Playground →</span>
+			</a>
+		</div>
+
+		<div class="footer">
+			<p>Virtual Labs &mdash; Deep Learning Experiments</p>
+		</div>
+	</div>
+<script src="../assets/js/iframeResize.js"></script>
+        
+        </body>
+
+</html>

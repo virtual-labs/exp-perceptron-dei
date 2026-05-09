@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perceptron Interactive Playground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/simulations.css">
+</head>
+
+<body>
+    <!-- Tab Navigation -->
+    <nav class="tab-navigation">
+        <div class="logo">Perceptron <span>Simulator</span></div>
+        <button class="tab-btn active" data-tab="sim1">1. Inside a Perceptron</button>
+        <button class="tab-btn" data-tab="sim2">2. Decision Boundary</button>
+        <button class="tab-btn" data-tab="sim3">3. Training Animation</button>
+        <button class="tab-btn" data-tab="sim4">4. Convergence vs Failure</button>
+        <button class="tab-btn" data-tab="sim5">5. Perceptron vs MLP</button>
+        <a href="../index.html" class="btn-back">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5" />
+                <path d="M12 19l-7-7 7-7" />
+            </svg>
+            Back to Home
+        </a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- ─── SIM 1: Inside a Perceptron ─── -->
+        <div id="sim1" class="tab-content active">
+            <div class="sim-layout">
+                <aside class="sim-sidebar glass-panel">
+                    <h2>Inside a Perceptron</h2>
+                    <p>Explore how inputs are multiplied by weights, summed with a bias, and passed through an
+                        activation function to produce output.</p>
+
+                    <h3>Inputs</h3>
+                    <div class="control-group">
+                        <div class="control-row">
+                            <label>x₁ <small style="color:#9ca3af;font-weight:400">(bit)</small></label>
+                            <span class="value" id="sim1X1Val">1</span>
+                        </div>
+                        <input type="range" id="sim1X1" min="0" max="1" step="1" value="1">
+                    </div>
+                    <div class="control-group">
+                        <div class="control-row">
+                            <label>x₂ <small style="color:#9ca3af;font-weight:400">(bit)</small></label>
+                            <span class="value" id="sim1X2Val">0</span>
+                        </div>
+                        <input type="range" id="sim1X2" min="0" max="1" step="1" value="0">
+                    </div>
+
+                    <h3>Weights & Bias</h3>
+                    <div class="control-group">
+                        <div class="control-row">
+                            <label>w₁</label>
+                            <span class="value" id="sim1W1Val">0.50</span>
+                        </div>
+                        <input type="range" id="sim1W1" min="-2" max="2" step="0.05" value="0.5">
+                    </div>
+                    <div class="control-group">
+                        <div class="control-row">
+                            <label>w₂</label>
+                            <span class="value" id="sim1W2Val">0.50</span>
+                        </div>
+                        <input type="range" id="sim1W2" min="-2" max="2" step="0.05" value="0.5">
+                    </div>
+                    <div class="control-group">
+                        <div class="control-row">
+                            <label>bias</label>
+                            <span class="value" id="sim1BiasVal">-0.50</span>
+                        </div>
+                        <input type="range" id="sim1Bias" min="-2" max="2" step="0.05" value="-0.5">
+                    </div>
+
+                    <h3>Activation</h3>
+                    <div class="control-group">
+                        <select id="sim1Activation">
+                            <option value="step">Step Function</option>
+                            <option value="sigmoid">Sigmoid</option>
+                        </select>
+                    </div>
+
+                    <h3>Observe</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li>Weighted sum = w₁·x₁ + w₂·x₂ + bias</li>
+                            <li>The step function outputs 1 if sum ≥ 0, else 0</li>
+                            <li>Adjust weights to see how they scale each input</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <div class="sim-main">
+                    <div class="sim1-perceptron-wrapper">
+                        <div class="perceptron-diagram glass-panel">
+                            <canvas id="sim1Canvas"></canvas>
+                        </div>
+                        <div class="computation-display glass-panel">
+                            <div class="comp-item">
+                                <span class="comp-label">Weighted Sum</span>
+                                <span class="comp-value" id="sim1Sum">0.00</span>
+                            </div>
+                            <div class="comp-item">
+                                <span class="comp-label">Activation Input</span>
+                                <span class="comp-value" id="sim1ActivationInput">0.00</span>
+                            </div>
+                            <div class="comp-item">
+                                <span class="comp-label">Output</span>
+                                <span class="comp-value" id="sim1Output">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="learning-outcome">
+                        <h4>💡 Key Insight</h4>
+                        <p>A perceptron computes a weighted sum and thresholds it. Changing weights controls how much
+                            each input contributes to the decision.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── SIM 2: Decision Boundary Visualizer ─── -->
+        <div id="sim2" class="tab-content">
+            <div class="sim-layout">
+                <aside class="sim-sidebar glass-panel">
+                    <h2>Decision Boundary</h2>
+                    <p>See how the perceptron's weights and bias define a line that separates two classes. Changing
+                        weights rotates the line; changing bias shifts it.</p>
+
+                    <h3>Weights & Bias</h3>
+                    <div class="control-group">
+                        <div class="control-row">
+                            <label>w₁</label>
+                            <span class="value" id="sim2W1Val">1.00</span>
+                        </div>
+                        <input type="range" id="sim2W1" min="-3" max="3" step="0.05" value="1">
+                    </div>
+                    <div class="control-group">
+                        <div class="control-row">
+                            <label>w₂</label>
+                            <span class="value" id="sim2W2Val">1.00</span>
+                        </div>
+                        <input type="range" id="sim2W2" min="-3" max="3" step="0.05" value="1">
+                    </div>
+                    <div class="control-group">
+                        <div class="control-row">
+                            <label>bias</label>
+                            <span class="value" id="sim2BiasVal">-0.50</span>
+                        </div>
+                        <input type="range" id="sim2Bias" min="-3" max="3" step="0.05" value="-0.5">
+                    </div>
+
+                    <h3>Dataset</h3>
+                    <div class="control-group">
+                        <select id="sim2Dataset">
+                            <option value="OR">OR Gate</option>
+                            <option value="AND">AND Gate</option>
+                            <option value="XOR">XOR Gate</option>
+                        </select>
+                    </div>
+
+                    <h3>Observe</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li>The green line is w₁·x₁ + w₂·x₂ + b = 0</li>
+                            <li>Changing w₁ & w₂ <strong>rotates</strong> the line</li>
+                            <li>Changing bias <strong>shifts</strong> the line</li>
+                            <li>The shaded regions show predicted classes</li>
+                            <li>Try XOR — no single line can separate it!</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <div class="sim-main">
+                    <div class="sim2-boundary-wrapper">
+                        <div class="boundary-canvas-wrap glass-panel">
+                            <canvas id="sim2Canvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="status-bar">
+                        <div class="status-dot" id="sim2StatusDot"></div>
+                        <span id="sim2StatusText">Accuracy: —</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── SIM 3: Training Animation ─── -->
+        <div id="sim3" class="tab-content">
+            <div class="sim-layout">
+                <aside class="sim-sidebar glass-panel">
+                    <h2>Training Animation</h2>
+                    <p>Watch the perceptron learn step-by-step. On each misclassification, weights are updated and the
+                        decision boundary moves.</p>
+
+                    <h3>Settings</h3>
+                    <div class="control-group">
+                        <div class="control-row">
+                            <label>Learning Rate</label>
+                            <span class="value" id="sim3LrVal">0.10</span>
+                        </div>
+                        <input type="range" id="sim3Lr" min="0.01" max="0.5" step="0.01" value="0.1">
+                    </div>
+
+                    <div class="control-group">
+                        <label>Dataset</label>
+                        <select id="sim3Dataset">
+                            <option value="OR">OR Gate</option>
+                            <option value="AND">AND Gate</option>
+                        </select>
+                    </div>
+
+                    <div class="btn-group" style="margin-top: 0.75rem;">
+                        <button class="btn btn-primary" id="sim3Play">▶ Play</button>
+                        <button class="btn" id="sim3Step">Step</button>
+                        <button class="btn btn-danger" id="sim3Reset">Reset</button>
+                    </div>
+
+                    <h3>Observe</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li>Red highlight = misclassified point</li>
+                            <li>Weights update: w += lr × error × x</li>
+                            <li>The boundary shifts toward correct classification</li>
+                            <li>Training converges when all points are correct</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <div class="sim-main">
+                    <div class="sim3-training-wrapper">
+                        <div class="training-canvas-wrap glass-panel">
+                            <canvas id="sim3Canvas"></canvas>
+                        </div>
+                        <div class="training-log-panel glass-panel">
+                            <h4>Training Log</h4>
+                            <div class="training-log" id="sim3Log">Press Play or Step to begin training...</div>
+                        </div>
+                    </div>
+                    <div class="status-bar">
+                        <div class="status-dot" id="sim3StatusDot"></div>
+                        <span id="sim3StatusText">Ready</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── SIM 4: Convergence vs Failure ─── -->
+        <div id="sim4" class="tab-content">
+            <div class="sim-layout">
+                <aside class="sim-sidebar glass-panel">
+                    <h2>Convergence vs Failure</h2>
+                    <p>Compare a linearly separable dataset (OR) with a non-linearly separable one (XOR). The perceptron
+                        converges on OR but oscillates forever on XOR.</p>
+
+                    <h3>Settings</h3>
+                    <div class="control-group">
+                        <div class="control-row">
+                            <label>Learning Rate</label>
+                            <span class="value" id="sim4LrVal">0.10</span>
+                        </div>
+                        <input type="range" id="sim4Lr" min="0.01" max="0.5" step="0.01" value="0.1">
+                    </div>
+
+                    <div class="btn-group" style="margin-top: 0.75rem;">
+                        <button class="btn btn-primary" id="sim4Train">▶ Train Both</button>
+                        <button class="btn btn-danger" id="sim4Reset">Reset</button>
+                    </div>
+
+                    <h3>Observe</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li>Left: OR data is linearly separable → converges</li>
+                            <li>Right: XOR data is NOT separable → oscillates</li>
+                            <li>The perceptron convergence theorem guarantees convergence only for linearly separable
+                                data</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <div class="sim-main">
+                    <div class="sim4-convergence-wrapper">
+                        <div class="convergence-panel glass-panel">
+                            <h4>OR Gate (Separable) ✓</h4>
+                            <div class="convergence-canvas-wrap">
+                                <canvas id="sim4CanvasOR"></canvas>
+                            </div>
+                            <div class="convergence-stats">
+                                <span>Epoch: <span class="stat-value" id="sim4EpochOR">0</span></span>
+                                <span>Accuracy: <span class="stat-value" id="sim4AccOR">—</span></span>
+                            </div>
+                        </div>
+                        <div class="convergence-panel glass-panel">
+                            <h4>XOR Gate (Not Separable) ✗</h4>
+                            <div class="convergence-canvas-wrap">
+                                <canvas id="sim4CanvasXOR"></canvas>
+                            </div>
+                            <div class="convergence-stats">
+                                <span>Epoch: <span class="stat-value" id="sim4EpochXOR">0</span></span>
+                                <span>Accuracy: <span class="stat-value" id="sim4AccXOR">—</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="learning-outcome">
+                        <h4>💡 Key Insight</h4>
+                        <p>A perceptron is just a moving line. It can only solve problems where a straight line can
+                            separate the classes. XOR requires at least two lines (a hidden layer).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── SIM 5: Perceptron vs MLP ─── -->
+        <div id="sim5" class="tab-content">
+            <div class="sim-layout">
+                <aside class="sim-sidebar glass-panel">
+                    <h2>Perceptron vs MLP</h2>
+                    <p>See why multi-layer networks are needed. A single perceptron can only draw linear boundaries. An
+                        MLP with a hidden layer can create nonlinear boundaries.</p>
+
+                    <h3>Settings</h3>
+                    <div class="control-group">
+                        <div class="control-row">
+                            <label>MLP Hidden Neurons</label>
+                            <span class="value" id="sim5HiddenVal">4</span>
+                        </div>
+                        <input type="range" id="sim5Hidden" min="2" max="8" value="4">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-row">
+                            <label>MLP Learning Rate</label>
+                            <span class="value" id="sim5LrVal">0.50</span>
+                        </div>
+                        <input type="range" id="sim5Lr" min="0.1" max="2" step="0.1" value="0.5">
+                    </div>
+
+                    <div class="btn-group" style="margin-top: 0.75rem;">
+                        <button class="btn btn-primary" id="sim5Train">▶ Train Both</button>
+                        <button class="btn btn-danger" id="sim5Reset">Reset</button>
+                    </div>
+
+                    <h3>Observe</h3>
+                    <div class="observe-box glass-panel">
+                        <ul>
+                            <li>Left: Single perceptron — can only draw a line</li>
+                            <li>Right: MLP — combines multiple lines into a curve</li>
+                            <li>The MLP solves XOR by composing simple decisions</li>
+                            <li>Try adjusting hidden neurons and learning rate</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <div class="sim-main">
+                    <div class="sim5-comparison-wrapper">
+                        <div class="comparison-panel glass-panel">
+                            <h4>Single Perceptron (Linear)</h4>
+                            <div class="comparison-canvas-wrap">
+                                <canvas id="sim5CanvasPerceptron"></canvas>
+                            </div>
+                            <div class="comparison-stats">
+                                <span>Epoch: <span class="stat-value" id="sim5EpochP">0</span></span>
+                                <span>Accuracy: <span class="stat-value" id="sim5AccP">—</span></span>
+                            </div>
+                        </div>
+                        <div class="comparison-panel glass-panel">
+                            <h4>MLP (Nonlinear)</h4>
+                            <div class="comparison-canvas-wrap">
+                                <canvas id="sim5CanvasMLP"></canvas>
+                            </div>
+                            <div class="comparison-stats">
+                                <span>Epoch: <span class="stat-value" id="sim5EpochMLP">0</span></span>
+                                <span>Accuracy: <span class="stat-value" id="sim5AccMLP">—</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="learning-outcome">
+                        <h4>💡 Key Insight</h4>
+                        <p>A single perceptron draws one line. An MLP stacks multiple perceptrons, creating complex
+                            decision boundaries that can solve non-linear problems like XOR.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="./js/tabs.js"></script>
+    <script src="./js/sim1-inside-perceptron.js"></script>
+    <script src="./js/sim2-decision-boundary.js"></script>
+    <script src="./js/sim3-training-animation.js"></script>
+    <script src="./js/sim4-convergence.js"></script>
+    <script src="./js/sim5-perceptron-vs-mlp.js"></script>
+</body>
+
+</html>

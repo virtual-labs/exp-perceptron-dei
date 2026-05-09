@@ -36,7 +36,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "3. What is the XOR problem in the context of perceptrons?",
+      "question": "3. What is the XOR problem in the context of perceptron?",
       "answers": {
         "a": "A linearly separable problem that perceptrons can easily solve",
         "b": "A non-linearly separable problem that single-layer perceptrons cannot solve",
@@ -75,12 +75,12 @@
         "a": "They are reset to zero",
         "b": "They remain unchanged",
         "c": "They increase by the learning rate",
-        "d": "They are randomly reinitialised"
+        "d": "They are randomly reinitialized"
       },
       "explanations": {
         "a": "Incorrect because resetting would erase all learned information.",
         "b": "Correct because the error term becomes zero (y - ŷ = 0), resulting in no weight updates.",
-        "c": "Incorrect because weight changes depend on the error, not just learning rate.",
+        "c": "Incorrect because weight changes depend on the error, not just the learning rate.",
         "d": "Incorrect because random changes would disrupt the learning process."
       },
       "correctAnswer": "b",
@@ -115,7 +115,7 @@
         "a": "Incorrect because bias doesn't add features, it adjusts the decision boundary.",
         "b": "Correct because bias shifts the line's position without needing all inputs to be zero.",
         "c": "Incorrect because perceptron boundaries are always linear regardless of bias.",
-        "d": "Incorrect because single perceptrons are binary classifiers."
+        "d": "Incorrect because a single perceptron is a binary classifier."
       },
       "correctAnswer": "b",
       "difficulty": "beginner"
@@ -143,13 +143,13 @@
         "a": "$w_1 \\cdot x_1 + w_2 \\cdot x_2 + b = 0$",
         "b": "$w_1 \\cdot x_1^2 + w_2 \\cdot x_2^2 + b = 0$",
         "c": "$x_1 + x_2 = 1$",
-        "d": "$w_1 + x_1 + w_2 + x_2 + b = 0$"
+        "d": "$x_1 \\times x_2 = 0$"
       },
       "explanations": {
         "a": "Correct because this linear equation defines the line separating the two classes.",
         "b": "Incorrect because this represents a quadratic curve, not achievable with single-layer perceptrons.",
         "c": "Incorrect because the weights and bias are learnable parameters, not fixed to these values.",
-        "d": "Incorrect because the inputs and weights are added instead of multiplied."
+        "d": "Incorrect because this represents a logical condition rather than a perceptron decision boundary."
       },
       "correctAnswer": "a",
       "difficulty": "beginner"
@@ -164,7 +164,7 @@
       },
       "explanations": {
         "a": "Incorrect because XOR uses only 4 data points; data amount isn't the issue.",
-        "b": "Correct because the inability to solve XOR demonstrated that perceptrons cannot learn non-linear patterns.",
+        "b": "Correct because the inability to solve XOR demonstrated that the perceptron cannot learn non-linear patterns.",
         "c": "Incorrect because perceptrons work well with binary inputs for linearly separable problems.",
         "d": "Incorrect because perceptrons train quickly; the issue is their representational capacity."
       },

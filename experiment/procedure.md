@@ -1,9 +1,9 @@
 ### Procedure
 
 #### Step 1: Import Required Libraries
-Import necessary Python libraries including pandas for data handling, NumPy for numerical computations, and Matplotlib for visualisation of the dataset and decision boundaries.
+Import necessary Python libraries, including pandas for data handling, NumPy for numerical computations, and Matplotlib for visualization of the dataset and decision boundaries.
 
-#### Step 2: Create Dataset
+#### Step 2: Create a Dataset
 
 Generate the OR truth table with four data points:
 
@@ -17,16 +17,17 @@ $$
 (0,\,0) \rightarrow \text{Class } 0 \qquad (0,\,1) \rightarrow \text{Class } 1 \qquad (1,\,0) \rightarrow \text{Class } 1 \qquad (1,\,1) \rightarrow \text{Class } 0
 $$
 
-Store this data in a pandas DataFrame for easy manipulation and visualisation.
+Store this data in a pandas DataFrame for easy manipulation and visualization.
 
-#### Step 3: Visualise the Dataset
+#### Step 3: Visualize the Dataset
 Create a scatter plot showing the four data points with:
 - **Blue dots** representing Class 0
 - **Red dots** representing Class 1
 
-This visualisation shows a pattern that is linearly separable for OR. For XOR, the diagonal pattern makes it non-linearly separable.
+This visualization shows a pattern that is linearly separable for OR.
+For XOR, the diagonal pattern makes it non-linearly separable.
 
-#### Step 4: Initialise Perceptron Parameters
+#### Step 4: Initialize Perceptron Parameters
 Set random seed for reproducibility and initialise:
 - $w_1,\, w_2$: Random weights uniformly distributed between $-1$ and $1$
 - $b$: Random bias uniformly distributed between $-1$ and $1$
@@ -41,25 +42,25 @@ Create a function `plot_decision_boundary(w1, w2, b)` that:
 3. Plots this line in green on the scatter plot
 4. Handles the case when $w_2 = 0$ (vertical line)
 
-#### Step 6: Visualise Initial Random Decision Boundary
-Plot the dataset along with the initial random decision boundary to show the starting position before any training occurs. This demonstrates how randomly initialised weights create an arbitrary separation.
+#### Step 6: Visualize Initial Random Decision Boundary
+Plot the dataset along with the initial random decision boundary to show the starting position before any training occurs. This demonstrates how randomly initialized weights create an arbitrary separation.
 
 #### Step 7: Define Perceptron Training Function
 Implement `perceptron_train()` function that:
 
 For each epoch:
-1. Initialise correct prediction counter
+1. Initialise the correct prediction counter.
 2. For each data point:
    - Calculate linear output: $\text{linear\_output} = w_1 \cdot x_1 + w_2 \cdot x_2 + b$
    - Apply step activation: $y_{pred} = 1$ if $\text{linear\_output} \geq 0$ else $0$
-   - Count if prediction matches actual label
+   - Count if prediction matches actual label.
    - Calculate error: $\text{error} = y - y_{pred}$
    - Update weights: $w_1 = w_1 + \eta \times \text{error} \times x_1$
    - Update weights: $w_2 = w_2 + \eta \times \text{error} \times x_2$
    - Update bias: $b = b + \eta \times \text{error}$
 3. Calculate accuracy: $\text{accuracy} = \dfrac{\text{correct}}{\text{total}} \times 100$
-4. Print epoch results showing accuracy and updated parameters
-5. Visualise decision boundary after each epoch
+4. Print epoch results showing accuracy and updated parameters.
+5. Visualise the decision boundary after each epoch.
 
 Return final trained weights and bias.
 
@@ -73,14 +74,14 @@ After each epoch, generate and display a plot showing:
 - Epoch number in the title
 - Current accuracy percentage
 
-For OR, the boundary converges to a correct solution. For XOR, the perceptron fails to converge, demonstrating the limitation of single-layer perceptrons on non-linearly separable data.
+For OR, the boundary converges to a correct solution. For XOR, the perceptron fails to converge, demonstrating the limitation of single-layer perceptron on non-linearly separable data.
 
 #### Step 10: Make Final Predictions
 Define `predict()` function and use it to make predictions on all four points using the final trained weights. Display results showing:
 - Input coordinates
 - Predicted class
 - Actual class
-- Whether prediction is correct or incorrect
+- Whether the prediction is correct or incorrect
 
 Calculate and display final accuracy on the complete dataset.
 
